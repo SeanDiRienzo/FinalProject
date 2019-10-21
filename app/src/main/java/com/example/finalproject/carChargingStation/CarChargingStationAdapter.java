@@ -1,10 +1,13 @@
 package com.example.finalproject.carChargingStation;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
+import com.example.finalproject.R;
 import com.example.finalproject.carChargingStation.*;
 
 import java.util.ArrayList;
@@ -21,21 +24,31 @@ public class CarChargingStationAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        return 0;
+        return chargingStationList.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public ChargingStationObject getItem(int i) {
+        return chargingStationList.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return getItem(i).getId();
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        return null;
+
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+
+        View newView = inflater.inflate(R.layout.activity_car_charging_station_row, viewGroup, false);
+
+        ChargingStationObject row = getItem(i);
+        TextView rowTitle = (TextView)newView.findViewById(R.id.row_title);
+
+        rowTitle.setText(row.getTitle());
+        //return the row:
+        return newView;
     }
 }
