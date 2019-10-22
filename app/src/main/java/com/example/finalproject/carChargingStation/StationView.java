@@ -39,8 +39,8 @@ public class StationView extends AppCompatActivity {
 
         EditText phone = (EditText) findViewById(R.id.phoneResult);
         String phoneNumber = itemClicked.getPhone();
-        if(phoneNumber == null){
-            phone.setText("Not available");
+        if(phoneNumber.equals("null")){
+            phone.setText(R.string.phoneNull);
         }
         else {
             phone.setText(phoneNumber);
@@ -61,7 +61,6 @@ public class StationView extends AppCompatActivity {
 
         Button addBtn = (Button) findViewById(R.id.addButton);
         addBtn.setOnClickListener(click -> {
-
             //add to the database and get the new ID
             ContentValues newRowValues = new ContentValues();
             newRowValues.put(MyDatabaseOpenHelper.COL_TITLE, stationTitle);

@@ -52,7 +52,7 @@ public class CarChargingFavouriteStations extends AppCompatActivity {
 
             //add the new Contact to the array list:
             favStations.add(new ChargingStationObject(id, title, latitude, longitude, phone));
-            adapter = new CarChargingStationAdapter(getApplicationContext(), favStations);
+            adapter = new CarChargingStationAdapter(getApplicationContext(), favStations, false);
             listOfFavourites.setAdapter(adapter);
         }
 
