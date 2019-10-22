@@ -26,6 +26,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -46,7 +47,6 @@ public class CarChargingStation extends AppCompatActivity {
         longitude = findViewById(R.id.longitudeInput);
         theList = (ListView)findViewById(R.id.the_list);
 
-
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,8 +60,9 @@ public class CarChargingStation extends AppCompatActivity {
 
         theList.setOnItemClickListener(( parent,  view,  position,  id) ->{
        //     setContentView(R.layout.activity_car_charging_station_item_details);
-       //     ChargingStationObject chosenOne = stations.get(position);
+            ChargingStationObject chosenOne = stations.get(position);
             Intent nextPage = new Intent(CarChargingStation.this, StationView.class);
+            nextPage.putExtra("itemClicked", chosenOne);
             startActivity(nextPage);
         });
 
@@ -158,7 +159,7 @@ public class CarChargingStation extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            CarChargingStationAdapter adapter = new CarChargingStationAdapter(getApplicationContext(), stations);
+            CarChargingStationAdapter adapter = new CarChargingStationAdapter(getApplicationContext(), stations, true);
             theList.setAdapter(adapter);
 
         }
