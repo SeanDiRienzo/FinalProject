@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,21 +33,43 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity accepts latitude and longitude input from the user, searches for car charging stations and displays results on the screen
+ */
 public class CarChargingStation extends AppCompatActivity {
+    /**
+     * name of current activity
+     */
     public static final String ACTIVITY_NAME = "CAR_CHARGING_STATION";
+    /**
+     * list of car charging stations
+     */
     ArrayList<ChargingStationObject> stations = new ArrayList<ChargingStationObject>();
-    public EditText longitude;
-    ListView theList;
+    /**
+     * Field from the screen accepts longitude from a user
+     */
+    private EditText longitude;
+    /**
+     * List with car charging stations items from the screen
+     */
+    private ListView theList;
+    /**
+     * shared preferences instance
+     */
+    private SharedPreferences sharedPref;
+    /**
+     * Method loads layout, reacts to user's action
+     * @param savedInstanceState reference to a Bundle object that is passed into the onCreate method
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_charging_station);
-
         Button findButton = (Button)findViewById(R.id.searchButton);
         final EditText latitude = findViewById(R.id.latitudeInput);
-        longitude = findViewById(R.id.longitudeInput);
+        longitude = (EditText)findViewById(R.id.longitudeInput);
         theList = (ListView)findViewById(R.id.the_list);
-
+        sharedPref = getSharedPreferences("SharedPreferencesCarChargingStation", MODE_PRIVATE);
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,52 +78,36 @@ public class CarChargingStation extends AppCompatActivity {
                 DownloadFilesTask downloadFileTask = new DownloadFilesTask();
                 downloadFileTask.execute(url);
                 longitude.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("Latitude", latitude.getText().toString());
+                editor.putString("Longitude", longitude.getText().toString());
+                editor.commit();
             }
         });
-
         theList.setOnItemClickListener(( parent,  view,  position,  id) ->{
-       //     setContentView(R.layout.activity_car_charging_station_item_details);
             ChargingStationObject chosenOne = stations.get(position);
             Intent nextPage = new Intent(CarChargingStation.this, StationView.class);
             nextPage.putExtra("itemClicked", chosenOne);
             startActivity(nextPage);
         });
-
+        String latitudeValue = sharedPref.getString("Latitude", "");
+        latitude.setText(latitudeValue);
+        String longitudeValue = sharedPref.getString("Longitude", "");
+        longitude.setText(longitudeValue);
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e(ACTIVITY_NAME, "In Function onResume()");
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.e(ACTIVITY_NAME, "In Function onDestroy()");
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStart() {
-        Log.e(ACTIVITY_NAME, "In Function onStart()");
-        super.onStart();
-    }
-
-    @Override
-    protected void onPause() {
-        Log.e(ACTIVITY_NAME, "In Function onPause()");
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        Log.e(ACTIVITY_NAME, "In Function onStop()");
-        super.onStop();
-    }
+    /**
+     * Class connects to the server, reads and process the data
+     */
     private class DownloadFilesTask extends AsyncTask<String, String, String> {
+        /**
+         * dialog to show a progression of downloading to the user
+         */
         private ProgressDialog p;
 
+        /**
+         * Method shows a progression of downloading data from the server to the user
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -109,6 +116,11 @@ public class CarChargingStation extends AppCompatActivity {
             p.setCancelable(false);
             p.show();
         }
+        /**
+         * Methods connects to the server, retrieves the data about car charging stations
+         * @param urls link to the server
+         * @return data about car charging stations
+         */
         protected String doInBackground(String... urls) {
             HttpURLConnection urlConnection = null;
             String result = "";
@@ -139,11 +151,13 @@ public class CarChargingStation extends AppCompatActivity {
             }
             return result;
         }
-
+        /**
+         * Method gets car charging stations and displays them on the screen as a list of items
+         * @param result data about car charging stations retrieved by doInBackground method()
+         */
         protected void onPostExecute(String result) {
             p.dismiss();
             try {
-                // JSON Parsing of data
                 JSONArray jsonArray = new JSONArray(result);
                 for(int i = 0; i < jsonArray.length(); i++){
                     JSONObject stationJSON = jsonArray.getJSONObject(i);
@@ -159,9 +173,8 @@ public class CarChargingStation extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            CarChargingStationAdapter adapter = new CarChargingStationAdapter(getApplicationContext(), stations, true);
+            CarChargingStationAdapter adapter = new CarChargingStationAdapter(getApplicationContext(), stations, false);
             theList.setAdapter(adapter);
-
         }
     }
 }

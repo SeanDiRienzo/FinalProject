@@ -17,12 +17,18 @@ import com.example.finalproject.R;
 
 import java.util.Locale;
 
+/**
+ * Class shows car charging station's details, loads station on a google map
+ */
 public class StationView extends AppCompatActivity {
+    /**
+     * Method loads station's details on the screen, loads station on a google map, adds station to the list of favourite stations
+     * @param savedInstanceState reference to a Bundle object that is passed into the onCreate method
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_charging_station_item_details);
-
         ChargingStationObject itemClicked = (ChargingStationObject) getIntent().getSerializableExtra("itemClicked");
 
         EditText title = (EditText) findViewById(R.id.title);
@@ -45,29 +51,23 @@ public class StationView extends AppCompatActivity {
         else {
             phone.setText(phoneNumber);
         }
-
         Button loadMapBtn = (Button) findViewById(R.id.loadMap);
         loadMapBtn.setOnClickListener(clk -> {
             String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?q=loc:%f,%f", latitudeValue, longitudeValue);
-            //      Uri intentUri = Uri.parse("geo:" + itemClicked.getLatitude() + "," + itemClicked.getLongitude());
             Uri intentUri = Uri.parse(uri);
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, intentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
         });
-
         MyDatabaseOpenHelper dbOpener = new MyDatabaseOpenHelper(this);
         SQLiteDatabase db = dbOpener.getWritableDatabase();
-
         Button addBtn = (Button) findViewById(R.id.addButton);
         addBtn.setOnClickListener(click -> {
-            //add to the database and get the new ID
             ContentValues newRowValues = new ContentValues();
             newRowValues.put(MyDatabaseOpenHelper.COL_TITLE, stationTitle);
             newRowValues.put(MyDatabaseOpenHelper.COL_LATITUDE, latitudeValue);
             newRowValues.put(MyDatabaseOpenHelper.COL_LONGITUDE, longitudeValue);
             newRowValues.put(MyDatabaseOpenHelper.COL_PHONE, phoneNumber);
-            //insert in the database:
             long newId = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newRowValues);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -76,7 +76,6 @@ public class StationView extends AppCompatActivity {
                     .create();
                     dialog.show();
         });
-
         Button seeListBtn = (Button)findViewById(R.id.listOfFavouritesButton);
         seeListBtn.setOnClickListener(clk -> {
             Intent nextPage = new Intent(StationView.this, CarChargingFavouriteStations.class);
