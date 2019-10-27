@@ -21,27 +21,13 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/searchButton"
+        android:id="@+id/deleteFromFavouritesButton"
         android:layout_width="118dp"
         android:layout_height="wrap_content"
-        android:text="@string/searchButtonText"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentRight="true"
+        android:text="@string/deleteFavouriteButton" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/search_editText"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/searchButton"
-        android:layout_toLeftOf="@id/goToFavourites"
-        />
 
-    <Button
-        android:id="@+id/goToFavourites"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/goToFavouritesButtonText"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
+
 </RelativeLayout>
