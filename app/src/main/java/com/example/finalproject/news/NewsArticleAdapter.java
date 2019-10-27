@@ -7,9 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.example.finalproject.R;
-import com.example.finalproject.carChargingStation.*;
+
 import java.util.ArrayList;
-import static com.example.finalproject.carChargingStation.CarChargingStation.ACTIVITY_NAME;
 
 
 public class NewsArticleAdapter extends BaseAdapter {
@@ -54,7 +53,7 @@ public class NewsArticleAdapter extends BaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         ViewHolder holder = new ViewHolder();
 
-        convertView = LayoutInflater.from(mContext).inflate(R.layout.activity_news_row, parent, false);
+        convertView = LayoutInflater.from(mContext).inflate(R.layout.news_row, parent, false);
         holder.text = convertView.findViewById(R.id.row_title);
 
         convertView.setTag(holder);
