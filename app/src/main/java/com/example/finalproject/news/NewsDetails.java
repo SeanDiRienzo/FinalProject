@@ -1,6 +1,7 @@
 package com.example.finalproject.news;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalproject.R;
+import com.squareup.picasso.Picasso;
 
 public class NewsDetails extends AppCompatActivity {
     private Button goToUrlButton;
@@ -16,11 +18,27 @@ public class NewsDetails extends AppCompatActivity {
     private TextView articleDescription;
     private TextView articleTitle;
     private ImageView articleImage;
+    private TextView articleUrl;
+    private Intent lastIntent;
+    private NewsArticleObject articleObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_details);
+        articleTitle = findViewById(R.id.details_title);
+        articleDescription = findViewById(R.id.details_description);
+        articleImage = findViewById(R.id.details_image);
+        articleUrl = findViewById(R.id.url_textview);
+        lastIntent = getIntent();
+        articleObject = (NewsArticleObject)lastIntent.getSerializableExtra("articleObject");
+        articleTitle.setText(articleObject.getTitle());
+        articleDescription.setText(articleObject.getDescription());
+        Picasso.get().load(articleObject.getImageUrl()).into(articleImage);
+        articleUrl.setText(articleObject.getArticleUrl());
+
+
+
     }
 
     @Override

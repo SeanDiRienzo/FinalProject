@@ -1,25 +1,36 @@
 package com.example.finalproject.news;
 
+import android.app.Activity;
 import android.content.Context;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.finalproject.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static android.view.View.GONE;
 
-public class NewsArticleAdapter extends BaseAdapter {
+
+public class NewsArticleAdapter extends ArrayAdapter {
 
     private ArrayList<NewsArticleObject> newsArticleList;
 
     private Context mContext;
+    private int layoutResourceId;
 
-    public NewsArticleAdapter(Context context, ArrayList<NewsArticleObject> newsArticleList) {
-        super();
-        this.mContext = context;
+    public NewsArticleAdapter(Context mContext, int layoutResourceId, ArrayList<NewsArticleObject> newsArticleList) {
+        super(mContext, layoutResourceId, newsArticleList);
+        this.layoutResourceId = layoutResourceId;
+        this.mContext = mContext;
         this.newsArticleList = newsArticleList;
 
     }
@@ -32,6 +43,7 @@ public class NewsArticleAdapter extends BaseAdapter {
 
     /**
      * Methods gets a car charging station from a list
+     *
      * @param i position of a station in a list
      * @return ChargingStationObject car charging station
      */
@@ -49,20 +61,51 @@ public class NewsArticleAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        NewsArticleObject newsRow = this.getItem(position);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        ViewHolder holder = new ViewHolder();
+        View row = convertView;
 
-        convertView = LayoutInflater.from(mContext).inflate(R.layout.news_row, parent, false);
-        holder.text = convertView.findViewById(R.id.row_title);
+        ViewHolder holder;
 
-        convertView.setTag(holder);
-        holder.text.setText(newsRow.getDescription());
-        return convertView;
+        if (row == null) {
+            LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+            row = inflater.inflate(layoutResourceId, parent, false);
+            holder = new ViewHolder();
+            holder.text =  row.findViewById(R.id.row_title);
 
+
+            row.setTag(holder);
+        } else {
+            holder = (ViewHolder) row.getTag();
+        }
+
+
+        NewsArticleObject item = newsArticleList.get(position);
+
+        if (!TextUtils.isEmpty(Html.fromHtml(item.getTitle()))) {
+
+            holder.text.setText(Html.fromHtml(item.getTitle()));
+
+        } else {
+
+            holder.text.setVisibility(GONE);
+        }
+
+
+
+
+
+
+        return row;
 
     }
+
+    public void setListData(ArrayList<NewsArticleObject> mListData) {
+        this.newsArticleList = mListData;
+        notifyDataSetChanged();
+    }
+
     private static class ViewHolder {
         TextView text;
+        ImageView imageView;
+        TextView descriptionTextView;
     }
 }//class

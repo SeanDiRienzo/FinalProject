@@ -21,13 +21,21 @@
 
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/url_textview"
+        android:layout_below="@id/details_description"
+        />
+
     <ImageView
         android:id="@+id/details_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/details_description"
+        android:layout_below="@id/url_textview"
 
         />
+
 
     <Button
         android:id="@+id/go_to_url_button"

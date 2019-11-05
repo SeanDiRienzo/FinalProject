@@ -2,7 +2,7 @@ package com.example.finalproject.news;
 
 import java.io.Serializable;
 
-public class NewsArticleObject  {
+public class NewsArticleObject implements Serializable {
     //instance fields for my news articles
     private long id;
     private String title;
@@ -29,6 +29,7 @@ public class NewsArticleObject  {
     public String getTitle() {return this.title;}
     public String getArticleUrl() {return this.articleUrl;}
     public String getDescription() {return this.description;}
+    public String getImageUrl() {return this.imageUrl;}
 
     public void setTitle(String title) {
         this.title = title;
