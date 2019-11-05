@@ -1,7 +1,9 @@
 package com.example.finalproject.news;
 
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -16,9 +18,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalproject.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +39,8 @@ import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
+
 
 public class NewsModule extends AppCompatActivity {
     public static final String ACTIVITY_NAME = "NEWS";
@@ -48,34 +54,64 @@ public class NewsModule extends AppCompatActivity {
     private ProgressBar mProgressBar;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         String searchInput;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
-        mProgressBar = findViewById(R.id.progressBar);
+
         newsArticleList = new ArrayList<>();
         searchEditText = findViewById(R.id.search_editText);
         searchButton = findViewById(R.id.searchButton);
         favouritesButton = findViewById(R.id.goToFavourites);
         newsArticleListView = findViewById(R.id.articlesListView);
         adapter = new NewsArticleAdapter(this, R.layout.news_row, newsArticleList);
+        adapter.setListData(newsArticleList);
         newsArticleListView.setAdapter(adapter);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mProgressBar.setVisibility(View.VISIBLE);
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                showSnackbar(view, ("Searching: " + searchEditText.getText().toString()), LENGTH_SHORT);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(searchButton.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 NEWS_URL = "https://newsapi.org/v2/everything?q=" + searchEditText.getText().toString() + "&apiKey=fbdf04dd637a47b087b87dd6959ecc5a";
-                new AsyncHttpTask().execute(NEWS_URL);
 
 
+
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(NewsModule.this);
+                alertBuilder.setTitle("Search : " + searchEditText.getText());
+                alertBuilder.setMessage("Clear current view or add new search to current view");
+                alertBuilder.setNegativeButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                        new AsyncHttpTask().execute(NEWS_URL);
+                    }
+                });
+
+                alertBuilder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        adapter.clear();
+                        new AsyncHttpTask().execute(NEWS_URL);
+
+                    }
+                });
+                if (newsArticleList.size() > 0) {
+                    alertBuilder.show();
+                }else {
+                    new AsyncHttpTask().execute(NEWS_URL);
+                }
+
+                adapter.notifyDataSetChanged();
 
 
             }
         });
+
 
         newsArticleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -144,9 +180,9 @@ public class NewsModule extends AppCompatActivity {
         protected void onPostExecute(String result) {
             // Download complete. Let us update UI
             if (result != null) {
+                adapter.notifyDataSetChanged();
 
-                adapter.setListData(newsArticleList);
-                Toast.makeText(NewsModule.this, "Loading Data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewsModule.this, "Data Loaded", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(NewsModule.this, "Failed to load data!", Toast.LENGTH_SHORT).show();
             }
@@ -196,7 +232,7 @@ public class NewsModule extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mProgressBar.setVisibility(View.INVISIBLE);
+
     }
 
     public void startDetailsactivity(NewsArticleObject item) {
@@ -204,6 +240,10 @@ public class NewsModule extends AppCompatActivity {
         detailsActivity.putExtra("articleObject", item);
 
         startActivity(detailsActivity);
+    }
+
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar.make(view, message, duration).show();
     }
 
     @Override
