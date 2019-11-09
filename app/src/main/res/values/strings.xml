@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Final Project</string>
-
     <string name="charging_station">Charging Station</string>
     <string name="news">News</string>
     <string name="recipe_finder">Recipe_Finder</string>
@@ -18,4 +17,7 @@
         <item>Uranus</item>
         <item>Neptune</item>
     </string-array>
+    <string name="searchButtonText">Search</string>
+    <string name="goToFavouritesButtonText">Favourites</string>
+    <string name="deleteFavouriteButton">Delete</string>
 </resources>
