@@ -2,8 +2,12 @@ package com.example.finalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+
+import com.example.finalproject.recipeFinder.RecipeFinder;
 
 public class MainActivity extends AppCompatActivity {
     public static final String ACTIVITY_NAME = "MAIN_ACTIVITY";
@@ -11,6 +15,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // ACTIONS FOR LOGIN BUTTON
+        Button loginButton = findViewById(R.id.buttonRecipeFinder);
+        loginButton.setOnClickListener(clk -> {
+            // Next activity
+            Intent recipeFinderActivity = new Intent(MainActivity.this, RecipeFinder.class);
+            startActivity(recipeFinderActivity);
+        });
+
     }
 
 
