@@ -20,4 +20,5 @@
     <string name="searchButtonText">Search</string>
     <string name="goToFavouritesButtonText">Favourites</string>
     <string name="deleteFavouriteButton">Delete</string>
+    <string name="recipeButtonSearch">Search for a Recipe </string>
 </resources>

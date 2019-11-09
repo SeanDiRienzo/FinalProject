@@ -4,9 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
-
+import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.finalproject.carChargingStation.CarChargingStation;
 import com.example.finalproject.currencyConverter.CurrencyConverter;
 import com.example.finalproject.news.NewsModule;
