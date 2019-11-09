@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".recipeFinder.RecipeFinder"></activity>
-        <activity android:name=".news.NewsModule" />
-        <activity android:name=".carChargingStation.CarChargingStation" />
-        <activity android:name=".currencyConverter.CurrencyConverter" />
+        <activity android:label="@string/recipe_finder" android:name=".recipeFinder.RecipeFinder"></activity>
+        <activity android:label="@string/news" android:name=".news.NewsModule" />
+        <activity android:label="@string/charging_station" android:name=".carChargingStation.CarChargingStation" />
+        <activity android:label="@string/currency" android:name=".currencyConverter.CurrencyConverter" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,5 +21,5 @@
             </intent-filter>
         </activity>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
