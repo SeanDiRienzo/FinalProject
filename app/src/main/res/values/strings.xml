@@ -6,8 +6,8 @@
     <string name="recipe_finder">Recipe_Finder</string>
     <string name="currency">Currency</string>
 
-    <string name="input_currency">Enter amount</string>
-    <string name="btn_convert">Save</string>
+    <string name="input_currency">Enter currency</string>
+    <string name="btn_convert">Search</string>
     <string-array name="currency_array">
         <item>Mercury</item>
         <item>Venus</item>

@@ -32,14 +32,19 @@ public class CurrencyConverterAdapter extends BaseAdapter {
     public View getView(int p, View recycled, ViewGroup parent)
     {
         View thisRow = recycled;
-        CurrencyObject mesg = getItem(p);
+        CurrencyObject currencyObject = getItem(p);
         thisRow = ((Activity) this.mContext).getLayoutInflater().inflate(R.layout.currency_row_layout, null);
 
+
+        TextView txt_base = thisRow.findViewById(R.id.txt_base);
+        txt_base.setText("1 " + currencyObject.getBase() + " = ");
+
         TextView txt_currency = thisRow.findViewById(R.id.txt_currency);
-        txt_currency.setText(mesg.getName());
+        txt_currency.setText(currencyObject.getName());
+
 
         TextView txt_rate = thisRow.findViewById(R.id.txt_rate);
-        txt_rate.setText(mesg.getRate());
+        txt_rate.setText(currencyObject.getRate());
 
         return thisRow;
     }

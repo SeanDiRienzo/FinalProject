@@ -4,19 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,7 +31,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class CurrencyConverter extends AppCompatActivity {
@@ -51,81 +45,30 @@ public class CurrencyConverter extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currency_converter);
-        Spinner spinner_currency_in = (Spinner) findViewById(R.id.spinner_currency_in);
-        Spinner spinner_currency_out = (Spinner) findViewById(R.id.spinner_currency_out);
+        ListView theList = findViewById(R.id.lv_currency);
+        theList.setAdapter(myAdapter = new CurrencyConverterAdapter(this, currencyList));
 
-        try {
-            CurrencyService getRequest = new CurrencyService();
-
-            resp = getRequest.execute(myUrl + "CAD").get();
-            ArrayList<String> currencySymbol = new ArrayList<>();
-            currencySymbol.add("CAD");
-            for (Iterator<String> iter = resp.keys(); iter.hasNext(); ) {
-                String key = iter.next();
-                currencySymbol.add(key);
-                currencyList.add(new CurrencyObject(key, resp.getString(key)));
-            }
-            initSpinner(spinner_currency_in, currencySymbol);
-            initSpinner(spinner_currency_out, currencySymbol);
-            spinner_currency_out.setSelection(3);
-            EditText edt = findViewById(R.id.input_amount);
-            edt.setText("1");
-            onConvert(1);
-
-            edt.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    try {
-                        onConvert(Integer.parseInt(s.toString()));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Button btn_save = findViewById(R.id.btn_save);
-        btn_save.setOnClickListener(clik ->
+        Button btn_search = findViewById(R.id.btn_search);
+        btn_search.setOnClickListener(clik ->
         {
-            ListView theList = findViewById(R.id.lv_currency);
-            theList.setAdapter(myAdapter = new CurrencyConverterAdapter(this, currencyList));
+            try {
+                currencyList.clear();
+                CurrencyService getRequest = new CurrencyService();
+                EditText edt = (EditText) findViewById(R.id.input_amount) ;
+                resp = getRequest.execute(myUrl + edt.getText().toString().toUpperCase()).get();
+                for (Iterator<String> iter = resp.keys(); iter.hasNext(); ) {
+                    String key = iter.next();
+                    currencyList.add(new CurrencyObject(key, resp.getString(key), edt.getText().toString().toUpperCase()));
+                }
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             myAdapter.notifyDataSetChanged();
         });
-    }
-
-    private void onConvert(int amount) throws JSONException {
-        Spinner spinner_currency_in = (Spinner) findViewById(R.id.spinner_currency_in);
-        Spinner spinner_currency_out = (Spinner) findViewById(R.id.spinner_currency_out);
-
-        double result = convert(amount, spinner_currency_in.getSelectedItem().toString(), spinner_currency_out.getSelectedItem().toString());
-        TextView output_amount = findViewById(R.id.output_amount);
-        output_amount.setText(String.valueOf(result));
-    }
-    private double convert(int amount, String from, String to) throws JSONException {
-       double result =((double) amount)*resp.getInt(from)/resp.getInt(to);
-       return result;
-    }
-    private void initSpinner(Spinner spinner, ArrayList<String> currencySymbol) {
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getStringArray(currencySymbol));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
     }
 
     // Function to convert ArrayList<String> to String[]
