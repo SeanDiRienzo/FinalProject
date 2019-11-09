@@ -2,39 +2,42 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:hint="Image goes here"
+        />
 
     <TextView
-        android:id="@+id/itemField"
+        android:id="@+id/idNumberField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Item here" />
+        android:layout_below="@+id/image"
+        android:hint="ID number" />
 
     <TextView
         android:id="@+id/numberField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/itemField"
-        android:text="number here" />
+        android:layout_below="@id/idNumberField"
+        android:hint="number here" />
 
     <TextView
         android:id="@+id/titleField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/numberField"
-        android:text="Title: " />
+        android:hint="Title goes here: " />
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleField" />
+
 
     <TextView
         android:id="@+id/urlField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/image"
-        android:hint="Image goes here" />
+        android:layout_below="@id/titleField"
+        android:hint="URL source goes here" />
 
 
 </RelativeLayout>

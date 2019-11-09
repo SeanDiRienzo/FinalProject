@@ -15,15 +15,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // ACTIONS FOR LOGIN BUTTON
-        Button loginButton = findViewById(R.id.buttonRecipeFinder);
-        loginButton.setOnClickListener(clk -> {
-            // Next activity
-            Intent recipeFinderActivity = new Intent(MainActivity.this, RecipeFinder.class);
-            startActivity(recipeFinderActivity);
-        });
-
     }
 
 

@@ -1,0 +1,10 @@
+        // ACTIONS FOR LOGIN BUTTON
+        Button loginButton = findViewById(R.id.buttonRecipeFinder);
+        loginButton.setOnClickListener(clk -> {
+            // Next activity
+            Intent recipeFinderActivity = new Intent(MainActivity.this, RecipeFinder.class);
+            startActivity(recipeFinderActivity);
+        });
+
+
+
