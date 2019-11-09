@@ -12,19 +12,21 @@
         android:theme="@style/AppTheme">
         <activity android:name=".recipeFinder.RecipeFinder"/>
         <activity android:name=".news.NewsModule" />
-        <activity android:name=".carChargingStation.CarChargingStation">
-            <intent-filter>
+        <activity android:name=".carChargingStation.CarChargingStation"/>
+        <activity android:name=".carChargingStation.StationView" />
+        <activity android:name=".carChargingStation.CarChargingFavouriteStations" />
+        <activity android:name=".currencyConverter.CurrencyConverter" />
+        <activity android:label="@string/recipe_finder" android:name=".recipeFinder.RecipeFinder"></activity>
+        <activity android:label="@string/news" android:name=".news.NewsModule" />
+        <activity android:label="@string/charging_station" android:name=".carChargingStation.CarChargingStation" />
+        <activity android:label="@string/currency" android:name=".currencyConverter.CurrencyConverter" />
+        <activity android:name=".MainActivity">
+		    <intent-filter>
                  <action android:name="android.intent.action.MAIN" />
                  <category android:name="android.intent.category.LAUNCHER" />
                  <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".carChargingStation.StationView" />
-        <activity android:name=".carChargingStation.CarChargingFavouriteStations" />
-        <activity android:name=".currencyConverter.CurrencyConverter" />
-        <activity android:name=".MainActivity">
-
-        </activity>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
