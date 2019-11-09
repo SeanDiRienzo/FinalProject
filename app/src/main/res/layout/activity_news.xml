@@ -53,6 +53,15 @@
             android:layout_alignParentRight="true"
             android:text="@string/goToFavouritesButtonText" />
 
+        <ProgressBar
+            android:layout_below="@id/search_editText"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:id="@+id/progress_bar"
+            />
+
     </RelativeLayout>
 
 

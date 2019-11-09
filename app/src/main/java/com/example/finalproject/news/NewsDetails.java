@@ -22,6 +22,10 @@ public class NewsDetails extends AppCompatActivity {
     private Intent lastIntent;
     private NewsArticleObject articleObject;
 
+    /**
+     * setup the ui
+
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +36,10 @@ public class NewsDetails extends AppCompatActivity {
         articleUrl = findViewById(R.id.url_textview);
         lastIntent = getIntent();
         articleObject = (NewsArticleObject)lastIntent.getSerializableExtra("articleObject");
+        /**
+         * grab article object from intent
+         * display article object information
+         */
         articleTitle.setText(articleObject.getTitle());
         articleDescription.setText(articleObject.getDescription());
         Picasso.get().load(articleObject.getImageUrl()).into(articleImage);

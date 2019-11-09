@@ -42,10 +42,10 @@ public class NewsArticleAdapter extends ArrayAdapter {
     }
 
     /**
-     * Methods gets a car charging station from a list
+     * Methods gets the article item at index
      *
-     * @param i position of a station in a list
-     * @return ChargingStationObject car charging station
+     * @param i position of a article in a list
+     * @return news article object
      */
     @Override
     public NewsArticleObject getItem(int i) {
@@ -59,6 +59,11 @@ public class NewsArticleAdapter extends ArrayAdapter {
     }
 
 
+    /**
+     * manufactures a new view to be placed into the listview as a singular row
+     *
+     * @return row
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
@@ -69,7 +74,7 @@ public class NewsArticleAdapter extends ArrayAdapter {
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
-            holder.text =  row.findViewById(R.id.row_title);
+            holder.text = row.findViewById(R.id.row_title);
 
 
             row.setTag(holder);
@@ -90,13 +95,10 @@ public class NewsArticleAdapter extends ArrayAdapter {
         }
 
 
-
-
-
-
         return row;
 
     }
+
 
     public void setListData(ArrayList<NewsArticleObject> mListData) {
         this.newsArticleList = mListData;
