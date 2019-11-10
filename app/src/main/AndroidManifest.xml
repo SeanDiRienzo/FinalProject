@@ -19,7 +19,7 @@
         <activity android:name=".carChargingStation.StationView" />
         <activity android:name=".carChargingStation.CarChargingFavouriteStations" />
 
-        <activity android:label="@string/recipe_finder" android:name=".recipeFinder.RecipeFinder"></activity>
+        <activity android:label="@string/recipe_finder" android:name=".recipeFinder.RecipeFinder" />
         
         <activity android:label="@string/currency" android:name=".currencyConverter.CurrencyConverter" />
 
