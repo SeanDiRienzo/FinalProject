@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -108,7 +109,7 @@ public class CarChargingStation extends AppCompatActivity {
         /**
          * dialog to show a progression of downloading to the user
          */
-        private ProgressDialog p;
+        //private ProgressDialog p;
 
         @Override
         protected void onProgressUpdate(Integer... values) {
@@ -146,14 +147,12 @@ public class CarChargingStation extends AppCompatActivity {
                 e.printStackTrace();
             }
             try {
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                InputStream in = urlConnection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                 publishProgress(50);
-                InputStreamReader reader = new InputStreamReader(in);
-
-                int data = reader.read();
-                while (data != -1) {
-                    result += (char) data;
-                    data = reader.read();
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    result += line;
                 }
                 publishProgress(70);
                 return result;
@@ -173,6 +172,7 @@ public class CarChargingStation extends AppCompatActivity {
          * @param result data about car charging stations retrieved by doInBackground method()
          */
         protected void onPostExecute(String result) {
+            stations.clear(); // remove old results
             try {
                 JSONArray jsonArray = new JSONArray(result);
                 for(int i = 0; i < jsonArray.length(); i++){
