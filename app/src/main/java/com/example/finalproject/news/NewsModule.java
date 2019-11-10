@@ -119,7 +119,8 @@ public class NewsModule extends AppCompatActivity {
                     @Override
 
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        adapter.clear();
+                        newsArticleList.clear();
+                        adapter.notifyDataSetChanged();
                         new AsyncHttpTask().execute(NEWS_URL);
 
                     }
