@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import static android.view.View.GONE;
 
 
-public class NewsArticleAdapter extends ArrayAdapter {
+public class NewsArticleAdapter extends BaseAdapter {
 
     private ArrayList<NewsArticleObject> newsArticleList;
 
@@ -28,7 +28,7 @@ public class NewsArticleAdapter extends ArrayAdapter {
     private int layoutResourceId;
 
     public NewsArticleAdapter(Context mContext, int layoutResourceId, ArrayList<NewsArticleObject> newsArticleList) {
-        super(mContext, layoutResourceId, newsArticleList);
+        super();
         this.layoutResourceId = layoutResourceId;
         this.mContext = mContext;
         this.newsArticleList = newsArticleList;
