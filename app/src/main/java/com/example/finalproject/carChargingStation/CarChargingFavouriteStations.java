@@ -5,13 +5,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalproject.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -66,6 +69,7 @@ public class CarChargingFavouriteStations extends AppCompatActivity {
         }
         listOfFavourites.setOnItemClickListener(( parent,  view,  position,  id) -> {
             positionClicked = position;
+            Toast.makeText(getApplicationContext(),"You picked a station to delete",Toast.LENGTH_SHORT).show();
         });
         Button delete = (Button)findViewById(R.id.deleteButton);
         delete.setOnClickListener(clk -> {
@@ -80,8 +84,8 @@ public class CarChargingFavouriteStations extends AppCompatActivity {
                             adapter.notifyDataSetChanged();
                             int numDeleted = db.delete(MyDatabaseOpenHelper.TABLE_NAME,
                                     MyDatabaseOpenHelper.COL_ID + "=?", new String[] {Long.toString(stationToDelete.getId())});
-                            Log.i("ViewContact", "Deleted " + numDeleted + " rows");
-                            finish();
+                            Log.i("StationView", "Deleted " + numDeleted + " rows");
+                            Snackbar.make((View)findViewById(R.id.snackbar), "Station was successfully deleted", Snackbar.LENGTH_LONG).show();
                         }
                     })
                     .setNegativeButton("Cancel", (d,w) -> {  /* nothing */})

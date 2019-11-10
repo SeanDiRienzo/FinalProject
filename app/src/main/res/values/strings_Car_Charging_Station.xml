@@ -5,8 +5,8 @@
     <string name="longitude">Longitude: </string>
     <string name="longitudeInput">Enter longitude</string>
     <string name="searchButton">Find</string>
-    <string name="title">Location Title</string>
-    <string name="phone">Contact Telephone Number</string>
+    <string name="title">Location Title: </string>
+    <string name="phone">Contact Telephone Number: </string>
     <string name="loadMap">Load Directions In Google Maps</string>
     <string name="add">Add To Favourites</string>
     <string name="listOfFavourites">See List Of Favourite Stations</string>

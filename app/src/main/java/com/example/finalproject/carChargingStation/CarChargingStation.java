@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.example.finalproject.R;
 
@@ -57,6 +58,7 @@ public class CarChargingStation extends AppCompatActivity {
      * shared preferences instance
      */
     private SharedPreferences sharedPref;
+    private ProgressBar progressBar;
     /**
      * Method loads layout, reacts to user's action
      * @param savedInstanceState reference to a Bundle object that is passed into the onCreate method
@@ -65,6 +67,9 @@ public class CarChargingStation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_charging_station);
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         Button findButton = (Button)findViewById(R.id.searchButton);
         final EditText latitude = findViewById(R.id.latitudeInput);
         longitude = (EditText)findViewById(R.id.longitudeInput);
@@ -99,16 +104,24 @@ public class CarChargingStation extends AppCompatActivity {
     /**
      * Class connects to the server, reads and process the data
      */
-    private class DownloadFilesTask extends AsyncTask<String, String, String> {
+    private class DownloadFilesTask extends AsyncTask<String, Integer, String> {
         /**
          * dialog to show a progression of downloading to the user
          */
         private ProgressDialog p;
 
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(values[0]);
+
+            //Update GUI stuff only:
+        }
         /**
          * Method shows a progression of downloading data from the server to the user
          */
-        @Override
+  /*      @Override
         protected void onPreExecute() {
             super.onPreExecute();
             p = new ProgressDialog(CarChargingStation.this);
@@ -116,7 +129,8 @@ public class CarChargingStation extends AppCompatActivity {
             p.setCancelable(false);
             p.show();
         }
-        /**
+     */
+       /**
          * Methods connects to the server, retrieves the data about car charging stations
          * @param urls link to the server
          * @return data about car charging stations
@@ -127,11 +141,13 @@ public class CarChargingStation extends AppCompatActivity {
             try {
                 URL link = new URL(urls[0]);
                 urlConnection = (HttpURLConnection) link.openConnection();
+                publishProgress(25);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             try {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                publishProgress(50);
                 InputStreamReader reader = new InputStreamReader(in);
 
                 int data = reader.read();
@@ -139,6 +155,7 @@ public class CarChargingStation extends AppCompatActivity {
                     result += (char) data;
                     data = reader.read();
                 }
+                publishProgress(70);
                 return result;
             }
                 catch (IOException e) {
@@ -156,7 +173,6 @@ public class CarChargingStation extends AppCompatActivity {
          * @param result data about car charging stations retrieved by doInBackground method()
          */
         protected void onPostExecute(String result) {
-            p.dismiss();
             try {
                 JSONArray jsonArray = new JSONArray(result);
                 for(int i = 0; i < jsonArray.length(); i++){
@@ -175,6 +191,7 @@ public class CarChargingStation extends AppCompatActivity {
             }
             CarChargingStationAdapter adapter = new CarChargingStationAdapter(getApplicationContext(), stations, false);
             theList.setAdapter(adapter);
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 }
