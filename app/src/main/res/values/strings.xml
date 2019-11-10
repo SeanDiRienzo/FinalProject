@@ -1,6 +1,24 @@
 <resources>
     <string name="app_name">Final Project</string>
+    <string name="charging_station">Charging Station</string>
+    <string name="news">News</string>
+    <string name="recipe_finder">Recipe_Finder</string>
+    <string name="currency">Currency</string>
+
+    <string name="input_currency">Enter currency</string>
+    <string name="btn_convert">Search</string>
+    <string-array name="currency_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
     <string name="searchButtonText">Search</string>
     <string name="goToFavouritesButtonText">Favourites</string>
     <string name="deleteFavouriteButton">Delete</string>
+    <string name="recipeButtonSearch">Search for a Recipe </string>
 </resources>
