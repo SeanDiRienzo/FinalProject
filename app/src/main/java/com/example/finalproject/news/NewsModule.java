@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.finalproject.R;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,7 +42,10 @@ import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.LENGTH_SHORT;
+
 
 /**
  * News Activity class that provides the user functionality requested by assignment
@@ -55,6 +61,8 @@ public class NewsModule extends AppCompatActivity {
     private EditText searchEditText;
     private String NEWS_URL;
     private ProgressBar mProgressBar;
+    private Toolbar help_bar;
+    private String description = " Sean Di Rienzo - News version 0.2 \n -Enter a search term and click search \n -Select an item from the list to view more item details \n -Hit the Favourites Button to view a list of previously saved articles";
 
 
     @Override
@@ -71,6 +79,10 @@ public class NewsModule extends AppCompatActivity {
         searchButton = findViewById(R.id.searchButton);
         favouritesButton = findViewById(R.id.goToFavourites);
         newsArticleListView = findViewById(R.id.articlesListView);
+
+        help_bar = findViewById(R.id.help_toolbar);
+        setSupportActionBar(help_bar);
+
         adapter = new NewsArticleAdapter(this, R.layout.news_row, newsArticleList);
         adapter.setListData(newsArticleList);
         newsArticleListView.setAdapter(adapter);
@@ -186,6 +198,25 @@ public class NewsModule extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.news_help_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+
+        AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(NewsModule.this);
+        helpAlertBuilder.setTitle("Help");
+        helpAlertBuilder.setMessage(description);
+        helpAlertBuilder.show();
+
+
+        return true;
+    }
+
     /**
      * function to handle newsapi connection on another thread
      */
@@ -236,9 +267,9 @@ public class NewsModule extends AppCompatActivity {
 
             if (result != null) {
                 adapter.notifyDataSetChanged();
-                Toast.makeText(NewsModule.this, "Data Loaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewsModule.this, "Data Loaded", LENGTH_SHORT).show();
             } else {
-                Toast.makeText(NewsModule.this, "Failed to load data!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewsModule.this, "Failed to load data!", LENGTH_SHORT).show();
             }
 
         }

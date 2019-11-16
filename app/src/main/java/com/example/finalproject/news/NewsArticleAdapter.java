@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.finalproject.R;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
 
