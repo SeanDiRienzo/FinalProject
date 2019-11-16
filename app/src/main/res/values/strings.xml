@@ -21,4 +21,6 @@
     <string name="goToFavouritesButtonText">Favourites</string>
     <string name="deleteFavouriteButton">Delete</string>
     <string name="recipeButtonSearch">Search for a Recipe </string>
+    <string name="help_menu_title_text">Help</string>
+    <string name="help_menu_dialog_text"></string>
 </resources>
