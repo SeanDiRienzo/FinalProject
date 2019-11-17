@@ -1,7 +1,6 @@
 package com.example.finalproject.news;
 
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -20,8 +21,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.finalproject.R;
+import com.example.finalproject.carChargingStation.CarChargingStation;
+import com.example.finalproject.currencyConverter.CurrencyConverter;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
@@ -32,14 +36,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
+import static android.widget.Toast.LENGTH_SHORT;
+
 
 /**
  * News Activity class that provides the user functionality requested by assignment
@@ -55,6 +59,8 @@ public class NewsModule extends AppCompatActivity {
     private EditText searchEditText;
     private String NEWS_URL;
     private ProgressBar mProgressBar;
+    private Toolbar main_menu;
+    private String description = " Sean Di Rienzo - News version 0.2 \n -Enter a search term and click search \n -Select an item from the list to view more item details \n -Hit the Favourites Button to view a list of previously saved articles";
 
 
     @Override
@@ -71,6 +77,11 @@ public class NewsModule extends AppCompatActivity {
         searchButton = findViewById(R.id.searchButton);
         favouritesButton = findViewById(R.id.goToFavourites);
         newsArticleListView = findViewById(R.id.articlesListView);
+
+        main_menu = findViewById(R.id.main_menu_news);
+
+        setSupportActionBar(main_menu);
+
         adapter = new NewsArticleAdapter(this, R.layout.news_row, newsArticleList);
         adapter.setListData(newsArticleList);
         newsArticleListView.setAdapter(adapter);
@@ -186,6 +197,42 @@ public class NewsModule extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.currency_selection:
+                startCurrencyActivity();
+                break;
+            case R.id.carCharginStation_Selection:
+                startCarChargingActivity();
+                break;
+
+            case R.id.recipe_selection:
+                startRecipeActivity();
+                break;
+
+            case R.id.overflow_help:
+                AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(NewsModule.this);
+                helpAlertBuilder.setTitle("Help");
+                helpAlertBuilder.setMessage(description);
+                helpAlertBuilder.show();
+                break;
+
+
+        }
+
+
+
+        return true;
+    }
+
     /**
      * function to handle newsapi connection on another thread
      */
@@ -236,9 +283,9 @@ public class NewsModule extends AppCompatActivity {
 
             if (result != null) {
                 adapter.notifyDataSetChanged();
-                Toast.makeText(NewsModule.this, "Data Loaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewsModule.this, "Data Loaded", LENGTH_SHORT).show();
             } else {
-                Toast.makeText(NewsModule.this, "Failed to load data!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewsModule.this, "Failed to load data!", LENGTH_SHORT).show();
             }
 
         }
@@ -344,6 +391,20 @@ public class NewsModule extends AppCompatActivity {
         detailsActivity.putExtra("articleObject", item);
 
         startActivity(detailsActivity);
+    }
+
+    public void startRecipeActivity() {
+
+    }
+
+    public void startCarChargingActivity() {
+        Intent chargingActivity = new Intent(this, CarChargingStation.class);
+        startActivity(chargingActivity);
+    }
+
+    public void startCurrencyActivity() {
+        Intent currencyActivity = new Intent(this, CurrencyConverter.class);
+        startActivity(currencyActivity);
     }
 
     /**

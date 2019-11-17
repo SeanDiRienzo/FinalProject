@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".news.NewsModule">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_menu_news"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/news"
+        />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,7 +34,7 @@
         android:id="@+id/relativeMenuLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:layout_below="@id/main_menu_news">
 
         <Button
             android:id="@+id/searchButton"

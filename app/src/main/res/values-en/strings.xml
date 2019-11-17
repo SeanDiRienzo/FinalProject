@@ -21,19 +21,6 @@
     <string name="goToFavouritesButtonText">Favourites</string>
     <string name="deleteFavouriteButton">Delete</string>
     <string name="recipeButtonSearch">Search for a Recipe </string>
-    <string name="latitudeInput">Enter latitude</string>
-    <string name="latitude">Latitude: </string>
-    <string name="longitude">Longitude: </string>
-    <string name="longitudeInput">Enter longitude</string>
-    <string name="searchButton">Find</string>
-    <string name="title">Location Title: </string>
-    <string name="phone">Contact Telephone Number: </string>
-    <string name="loadMap">Load Directions In Google Maps</string>
-    <string name="add">Add To Favourites</string>
-    <string name="listOfFavourites">See List Of Favourite Stations</string>
-    <string name="deleteButton">Delete</string>
-    <string name="phoneNull">Not available</string>
-    <string name="help">Help</string>
     <string name="help_menu_title_text">Help</string>
     <string name="help_menu_dialog_text"></string>
 </resources>
