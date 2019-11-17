@@ -13,14 +13,11 @@ package com.example.finalproject.recipeFinder;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,33 +26,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.finalproject.MainActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.carChargingStation.CarChargingStation;
 import com.example.finalproject.currencyConverter.CurrencyConverter;
 import com.example.finalproject.news.NewsModule;
-import com.google.android.material.snackbar.Snackbar;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import androidx.appcompat.widget.Toolbar;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Currency;
 import java.util.HashMap;
-
-import static android.widget.Toast.LENGTH_LONG;
-import static android.widget.Toast.makeText;
 
 public class RecipeFinder extends AppCompatActivity {
     /**
@@ -95,14 +80,14 @@ public class RecipeFinder extends AppCompatActivity {
 
         recipeListView = (ListView) findViewById(R.id.theList);
         recipeListView.setAdapter(myAdapter = new MyListAdapter());
-        alertExample();
+
 
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setProgressValue(progress); // CALLS METHOD for Progress Bar
                 new GetRecipes().execute();
-
+                alertExample();
                 if (buttonSearch != null) {
                     recipeBar.setVisibility(View.VISIBLE);
                 }
@@ -129,7 +114,7 @@ public class RecipeFinder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             //what to do when the menu item is selected:
-/*
+
             case R.id.item1:
                 Intent goToParking = new Intent(RecipeFinder.this, CarChargingStation.class);
                 startActivity(goToParking);
@@ -138,12 +123,12 @@ public class RecipeFinder extends AppCompatActivity {
                 Intent goToCurrency = new Intent(RecipeFinder.this, CurrencyConverter.class);
                 startActivity(goToCurrency);
                 break;
-   */
             case R.id.item3:
                 Intent goToNews = new Intent(RecipeFinder.this, NewsModule.class);
                 startActivity(goToNews);
                 break;
             case R.id.item4:
+                Toast.makeText(RecipeFinder.this,"Author: Jason Tomkins, Activity: RecipeFinder, Click on the Search Button", Toast.LENGTH_LONG).show();
                 Intent goToRecipe = new Intent(RecipeFinder.this, RecipeFinder.class);
                 startActivity(goToRecipe);
                 break;
@@ -153,16 +138,12 @@ public class RecipeFinder extends AppCompatActivity {
 
     public void alertExample() {
         View middle = getLayoutInflater().inflate(R.layout.activity_recipe_alertbox, null);
-        EditText editTextTyped = middle.findViewById(R.id.alertBox_text);
-
-        Toast toast = new Toast(getApplicationContext());
-        editTextTyped.getText().toString();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("")
                 .setPositiveButton("Positive", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        toast.makeText(RecipeFinder.this, editTextTyped.getText(), toast.LENGTH_LONG).show();
+                        // Do something
                     }
                 })
                 .setNegativeButton("Negative", new DialogInterface.OnClickListener() {
@@ -303,7 +284,6 @@ public class RecipeFinder extends AppCompatActivity {
 */
             return thisRow;
         }
-
     }
 
     /**

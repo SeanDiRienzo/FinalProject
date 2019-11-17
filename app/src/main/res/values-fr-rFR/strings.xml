@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Projet final</string>
+    <string name="charging_station">Station de charge</string>
+    <string name="news">Nouvelles</string>
+    <string name="recipe_finder">Recipe_Finder</string>
+    <string name="currency">Monai</string>
+
+    <string name="input_currency">Entrz le montant</string>
+    <string name="btn_convert">Recherche</string>
+    <string-array name="currency_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+    <string name="searchButtonText">Trouvez</string>
+    <string name="goToFavouritesButtonText">Favoris</string>
+    <string name="deleteFavouriteButton">Supprimer</string>
+    <string name="recipeButtonSearch">Recherchez une recette</string>
+    <string name="latitudeInput">Entrez latitude</string>
+    <string name="latitude">Latitude: </string>
+    <string name="longitude">Longitude: </string>
+    <string name="longitudeInput">Entrez longitude</string>
+    <string name="searchButton">Recherche</string>
+    <string name="title">"Location Titre: "</string>
+    <string name="phone">Contacter le numéro de téléphone:</string>
+    <string name="loadMap">Charger les itinéraires dans GoogleMaps</string>
+    <string name="add">Ajouter aux Favoris</string>
+    <string name="listOfFavourites">Voir la liste des stations préférées</string>
+    <string name="deleteButton">Supprimer</string>
+    <string name="phoneNull">Non disponible</string>
+    <string name="help">Aide</string>
+    <string name="help_menu_title_text">Aide</string>
+    <string name="help_menu_dialog_text"></string>
+    <string name="main_menu_car_stations">Localisateur de stations de recharge</string>
+
+
+</resources>
