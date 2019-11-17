@@ -54,7 +54,7 @@ public class CurrencyConverter extends AppCompatActivity {
             try {
                 currencyList.clear();
                 CurrencyService getRequest = new CurrencyService();
-                EditText edt = (EditText) findViewById(R.id.input_amount) ;
+                EditText edt = (EditText) findViewById(R.id.input_amount);
                 resp = getRequest.execute(myUrl + edt.getText().toString().toUpperCase()).get();
                 for (Iterator<String> iter = resp.keys(); iter.hasNext(); ) {
                     String key = iter.next();
@@ -124,95 +124,69 @@ public class CurrencyConverter extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_charging_station: {
-                Intent nextPage = new Intent(this, CarChargingStation.class);
-                startActivity(nextPage);
-                return true;
-            }
-            case R.id.nav_news: {
-                return true;
-            }
-            case R.id.nav_recipe_finder: {
-                return true;
-            }
-            case R.id.nav_currency: {
-                return true;
-            }
-            default:
-                return super.onOptionsItemSelected(item);
-        }
 
-    }
 
-    public class CurrencyService extends AsyncTask<String, Void, JSONObject> {
-        public static final String REQUEST_METHOD = "GET";
-        public static final int READ_TIMEOUT = 15000;
-        public static final int CONNECTION_TIMEOUT = 15000;
-        ProgressDialog p;
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            p = new ProgressDialog(CurrencyConverter.this);
-            p.setMessage("Please wait...It is downloading");
-            p.setIndeterminate(false);
-            p.setCancelable(false);
-            p.show();
-        }
 
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            String stringUrl = params[0];
-            JSONObject result;
-            String inputLine;
-            try {
-                //Create a URL object holding our url
-                URL myUrl = new URL(stringUrl);
-                //Create a connection
-                HttpURLConnection connection = (HttpURLConnection)
-                        myUrl.openConnection();
-                //Set methods and timeouts
-                connection.setRequestMethod(REQUEST_METHOD);
-                connection.setReadTimeout(READ_TIMEOUT);
-                connection.setConnectTimeout(CONNECTION_TIMEOUT);
 
-                //Connect to our url
-                connection.connect();
-                //Create a new InputStreamReader
-                InputStreamReader streamReader = new
-                        InputStreamReader(connection.getInputStream());
-                //Create a new buffered reader and String Builder
-                BufferedReader reader = new BufferedReader(streamReader);
-                StringBuilder stringBuilder = new StringBuilder();
-                //Check if the line we are reading is not null
-                while ((inputLine = reader.readLine()) != null) {
-                    stringBuilder.append(inputLine);
+        public class CurrencyService extends AsyncTask<String, Void, JSONObject> {
+            public static final String REQUEST_METHOD = "GET";
+            public static final int READ_TIMEOUT = 15000;
+            public static final int CONNECTION_TIMEOUT = 15000;
+            ProgressDialog p;
+
+
+
+            @Override
+            protected JSONObject doInBackground(String... params) {
+                String stringUrl = params[0];
+                JSONObject result;
+                String inputLine;
+                try {
+                    //Create a URL object holding our url
+                    URL myUrl = new URL(stringUrl);
+                    //Create a connection
+                    HttpURLConnection connection = (HttpURLConnection)
+                            myUrl.openConnection();
+                    //Set methods and timeouts
+                    connection.setRequestMethod(REQUEST_METHOD);
+                    connection.setReadTimeout(READ_TIMEOUT);
+                    connection.setConnectTimeout(CONNECTION_TIMEOUT);
+
+                    //Connect to our url
+                    connection.connect();
+                    //Create a new InputStreamReader
+                    InputStreamReader streamReader = new
+                            InputStreamReader(connection.getInputStream());
+                    //Create a new buffered reader and String Builder
+                    BufferedReader reader = new BufferedReader(streamReader);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    //Check if the line we are reading is not null
+                    while ((inputLine = reader.readLine()) != null) {
+                        stringBuilder.append(inputLine);
+                    }
+                    //Close our InputStream and Buffered reader
+                    reader.close();
+                    streamReader.close();
+                    //Set our result equal to our stringBuilder
+                    result = new JSONObject(stringBuilder.toString()).getJSONObject("rates");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    result = null;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    result = null;
                 }
-                //Close our InputStream and Buffered reader
-                reader.close();
-                streamReader.close();
-                //Set our result equal to our stringBuilder
-                result = new JSONObject(stringBuilder.toString()).getJSONObject("rates");
-            } catch (IOException e) {
-                e.printStackTrace();
-                result = null;
-            } catch (JSONException e) {
-                e.printStackTrace();
-                result = null;
+                return result;
             }
-            return result;
+
+            @Override
+            protected void onPostExecute(JSONObject jsonObject) {
+                super.onPostExecute(jsonObject);
+                Toast toast = Toast.makeText(getApplicationContext(), "Successful load currency", Toast.LENGTH_SHORT);
+                toast.show();
+                p.cancel();
+            }
         }
 
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            super.onPostExecute(jsonObject);
-            Toast toast = Toast.makeText(getApplicationContext(), "Successful load currency", Toast.LENGTH_SHORT);
-            toast.show();
-            p.cancel();
-        }
     }
-
-}

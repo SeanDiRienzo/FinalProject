@@ -31,8 +31,9 @@
             android:name=".currencyConverter.CurrencyConverter"
             android:label="@string/currency" />
 
-        <activity android:name=".news.NewsModule"
-            android:label="@string/news"/>
+        <activity
+            android:name=".news.NewsModule"
+            android:label="@string/news" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
