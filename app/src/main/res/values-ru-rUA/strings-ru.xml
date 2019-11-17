@@ -36,4 +36,7 @@
     <string name="deleteButton">Удалить</string>
     <string name="phoneNull">Недоступно</string>
     <string name="help">Помощь</string>
+    <string name="help_menu_title_text">Помощь</string>
+    <string name="help_menu_dialog_text"></string>
+
 </resources>
