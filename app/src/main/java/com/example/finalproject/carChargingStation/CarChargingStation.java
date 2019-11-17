@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.finalproject.R;
 
@@ -70,7 +71,7 @@ public class CarChargingStation extends AppCompatActivity {
         setContentView(R.layout.activity_car_charging_station);
 
         progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
         Button findButton = (Button)findViewById(R.id.searchButton);
         final EditText latitude = findViewById(R.id.latitudeInput);
         longitude = (EditText)findViewById(R.id.longitudeInput);
@@ -100,6 +101,19 @@ public class CarChargingStation extends AppCompatActivity {
         latitude.setText(latitudeValue);
         String longitudeValue = sharedPref.getString("Longitude", "");
         longitude.setText(longitudeValue);
+
+        Button btnHelp = (Button)findViewById(R.id.help);
+        btnHelp.setOnClickListener(clk -> {
+            setContentView(R.layout.car_station_help);
+            TextView editTextHelp = (TextView)findViewById(R.id.textViewHelp);
+            editTextHelp.setText("Author: Svitlana Tsushka \n Version Number: 1 \n Instructions: \n 1- Enter latitude and longitude \n" +
+                    "2 - Press 'Search' button \n" +
+                    "3 - Click a station from the list and see detailed information \n" +
+                    "4 - Click 'Load location in Google Maps' to see location of a station \n" +
+                    "5 - Click 'Add to favourites' to add a location to the list of favourite stations \n" +
+                    "6 - Click 'See list of favourite station' to go to the next page with favourite stations \n" +
+                    "7 - Click 'Delete' to delete a station from the list of favourite stations");
+        });
     }
 
     /**
