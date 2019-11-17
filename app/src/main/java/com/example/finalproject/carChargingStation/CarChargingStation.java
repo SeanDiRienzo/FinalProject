@@ -1,6 +1,8 @@
 package com.example.finalproject.carChargingStation;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,6 +11,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -19,7 +23,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.finalproject.MainActivity;
 import com.example.finalproject.R;
+import com.example.finalproject.currencyConverter.CurrencyConverter;
+import com.example.finalproject.news.NewsModule;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,6 +67,8 @@ public class CarChargingStation extends AppCompatActivity {
      * shared preferences instance
      */
     private SharedPreferences sharedPref;
+    private String description;
+    private Toolbar main_menu;
     private ProgressBar progressBar;
     /**
      * Method loads layout, reacts to user's action
@@ -77,6 +86,10 @@ public class CarChargingStation extends AppCompatActivity {
         longitude = (EditText)findViewById(R.id.longitudeInput);
         theList = (ListView)findViewById(R.id.the_list);
         sharedPref = getSharedPreferences("SharedPreferencesCarChargingStation", MODE_PRIVATE);
+
+        main_menu = findViewById(R.id.main_menu_car_stations);
+        setSupportActionBar(main_menu);
+
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,19 +114,6 @@ public class CarChargingStation extends AppCompatActivity {
         latitude.setText(latitudeValue);
         String longitudeValue = sharedPref.getString("Longitude", "");
         longitude.setText(longitudeValue);
-
-        Button btnHelp = (Button)findViewById(R.id.help);
-        btnHelp.setOnClickListener(clk -> {
-            setContentView(R.layout.car_station_help);
-            TextView editTextHelp = (TextView)findViewById(R.id.textViewHelp);
-            editTextHelp.setText("Author: Svitlana Tsushka \n Version Number: 1 \n Instructions: \n 1- Enter latitude and longitude \n" +
-                    "2 - Press 'Search' button \n" +
-                    "3 - Click a station from the list and see detailed information \n" +
-                    "4 - Click 'Load location in Google Maps' to see location of a station \n" +
-                    "5 - Click 'Add to favourites' to add a location to the list of favourite stations \n" +
-                    "6 - Click 'See list of favourite station' to go to the next page with favourite stations \n" +
-                    "7 - Click 'Delete' to delete a station from the list of favourite stations");
-        });
     }
 
     /**
@@ -207,6 +207,55 @@ public class CarChargingStation extends AppCompatActivity {
             theList.setAdapter(adapter);
             progressBar.setVisibility(View.INVISIBLE);
         }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.currency_selection:
+                startCurrencyActivity();
+                break;
+            case R.id.news_selection:
+                startNewsActivity();
+                break;
+
+            case R.id.recipe_selection:
+                startRecipeActivity();
+                break;
+
+            case R.id.overflow_help:
+                AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(CarChargingStation.this);
+                description = "Author: Svitlana Tsushka \nVersion Number: 1.0 \nInstructions: \n1- Enter latitude and longitude \n" +
+                        "2 - Press 'Search' button \n" +
+                        "3 - Click a station from the list and see detailed information \n" +
+                        "4 - Click 'Load location in Google Maps' to see location of a station \n" +
+                        "5 - Click 'Add to favourites' to add a location to the list of favourite stations \n" +
+                        "6 - Click 'See list of favourite station' to go to the next page with favourite stations \n" +
+                        "7 - Click 'Delete' to delete a station from the list of favourite stations";
+                helpAlertBuilder.setTitle("Help");
+                helpAlertBuilder.setMessage(description);
+                helpAlertBuilder.show();
+                break;
+        }
+        return true;
+    }
+    public void startCurrencyActivity() {
+        Intent currencyActivity = new Intent(this, CurrencyConverter.class);
+        startActivity(currencyActivity);
+    }
+    public void startNewsActivity() {
+        Intent currencyActivity = new Intent(this, NewsModule.class);
+        startActivity(currencyActivity);
+    }
+    public void startRecipeActivity() {
+        Intent currencyActivity = new Intent(this, MainActivity.class);
+        startActivity(currencyActivity);
     }
 }
 

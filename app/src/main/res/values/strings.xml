@@ -36,4 +36,5 @@
     <string name="help">Help</string>
     <string name="help_menu_title_text">Help</string>
     <string name="help_menu_dialog_text"></string>
+    <string name="main_menu_car_stations">Car Charging Stations Finder</string>
 </resources>

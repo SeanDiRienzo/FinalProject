@@ -38,5 +38,6 @@
     <string name="help">Помощь</string>
     <string name="help_menu_title_text">Помощь</string>
     <string name="help_menu_dialog_text"></string>
+    <string name="main_menu_car_stations">Поиск Локации</string>
 
 </resources>

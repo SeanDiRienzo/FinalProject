@@ -4,21 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_menu_car_stations"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:textAlignment="viewEnd"
-            android:layout_alignParentTop="true"
-            android:id="@+id/help"
-            android:textSize="20dp"
-            android:text="@string/help"/>
-
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:text="@string/main_menu_car_stations" />
 
     <TextView
         android:layout_width="wrap_content"
