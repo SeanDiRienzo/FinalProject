@@ -1,7 +1,6 @@
 package com.example.finalproject.news;
 
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.finalproject.R;
+import com.example.finalproject.carChargingStation.CarChargingStation;
+import com.example.finalproject.currencyConverter.CurrencyConverter;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
@@ -35,15 +36,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import static android.widget.Toast.LENGTH_SHORT;
-import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.LENGTH_SHORT;
 
 
@@ -61,7 +59,7 @@ public class NewsModule extends AppCompatActivity {
     private EditText searchEditText;
     private String NEWS_URL;
     private ProgressBar mProgressBar;
-    private Toolbar help_bar;
+    private Toolbar main_menu;
     private String description = " Sean Di Rienzo - News version 0.2 \n -Enter a search term and click search \n -Select an item from the list to view more item details \n -Hit the Favourites Button to view a list of previously saved articles";
 
 
@@ -80,8 +78,9 @@ public class NewsModule extends AppCompatActivity {
         favouritesButton = findViewById(R.id.goToFavourites);
         newsArticleListView = findViewById(R.id.articlesListView);
 
-        help_bar = findViewById(R.id.help_toolbar);
-        setSupportActionBar(help_bar);
+        main_menu = findViewById(R.id.main_menu_news);
+
+        setSupportActionBar(main_menu);
 
         adapter = new NewsArticleAdapter(this, R.layout.news_row, newsArticleList);
         adapter.setListData(newsArticleList);
@@ -201,17 +200,34 @@ public class NewsModule extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.news_help_menu, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.currency_selection:
+                startCurrencyActivity();
+                break;
+            case R.id.carCharginStation_Selection:
+                startCarChargingActivity();
+                break;
 
-        AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(NewsModule.this);
-        helpAlertBuilder.setTitle("Help");
-        helpAlertBuilder.setMessage(description);
-        helpAlertBuilder.show();
+            case R.id.recipe_selection:
+                startRecipeActivity();
+                break;
+
+            case R.id.overflow_help:
+                AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(NewsModule.this);
+                helpAlertBuilder.setTitle("Help");
+                helpAlertBuilder.setMessage(description);
+                helpAlertBuilder.show();
+                break;
+
+
+        }
+
 
 
         return true;
@@ -375,6 +391,19 @@ public class NewsModule extends AppCompatActivity {
         detailsActivity.putExtra("articleObject", item);
 
         startActivity(detailsActivity);
+    }
+
+    public void startRecipeActivity() {
+
+    }
+
+    public void startCarChargingActivity() {
+        Intent chargingActivity = new Intent(this, CarChargingStation.class);
+        startActivity(chargingActivity);
+    }
+
+    public void startCurrencyActivity() {
+        Intent currencyActivity = new Intent(this, CurrencyConverter.class);
     }
 
     /**

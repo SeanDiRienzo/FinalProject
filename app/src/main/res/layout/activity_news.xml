@@ -7,10 +7,10 @@
     tools:context=".news.NewsModule">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/help_toolbar"
+        android:id="@+id/main_menu_news"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="News"
+        android:text="@string/news"
         />
 
     <ScrollView
@@ -34,7 +34,7 @@
         android:id="@+id/relativeMenuLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/help_toolbar">
+        android:layout_below="@id/main_menu_news">
 
         <Button
             android:id="@+id/searchButton"
