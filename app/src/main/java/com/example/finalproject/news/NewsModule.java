@@ -61,20 +61,21 @@ public class NewsModule extends AppCompatActivity {
     private String NEWS_URL;
     private ProgressBar mProgressBar;
     private Toolbar main_menu;
-    private String description = " Sean Di Rienzo - News version 0.2 \n -Enter a search term and click search \n -Select an item from the list to view more item details \n -Hit the Favourites Button to view a list of previously saved articles";
+    private SharedPreferences sharedPref;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 
-        String searchInput;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
         mProgressBar = findViewById(R.id.progress_bar);
+        sharedPref = getSharedPreferences("News", MODE_PRIVATE);
         mProgressBar.setVisibility(View.VISIBLE);
         newsArticleList = new ArrayList<>();
         searchEditText = findViewById(R.id.search_editText);
+        searchEditText.setText(sharedPref.getString("search", ""));
         searchButton = findViewById(R.id.searchButton);
         favouritesButton = findViewById(R.id.goToFavourites);
         newsArticleListView = findViewById(R.id.articlesListView);
@@ -91,72 +92,76 @@ public class NewsModule extends AppCompatActivity {
         /**
          * Function to handle when user clicks "Search"
          */
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        favouritesButton.setOnClickListener(favourites -> {
+            startFavouritesActivity();
+        });
+        searchButton.setOnClickListener(search -> {
 
-                /**
-                 * show snackbar with text from searchbar
-                 */
-                showSnackbar(view, ("Searching: " + searchEditText.getText().toString()), LENGTH_SHORT);
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            /**
+             * show snackbar with text from searchbar
+             */
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("search", searchEditText.getText().toString());
+            editor.commit();
 
-                /**
-                 * close keyboard
-                 */
-                imm.hideSoftInputFromWindow(searchButton.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-                NEWS_URL = "https://newsapi.org/v2/everything?q=" + searchEditText.getText().toString() + "&apiKey=fbdf04dd637a47b087b87dd6959ecc5a";
+            showSnackbar(main_menu, ("Searching: " + searchEditText.getText().toString()), LENGTH_SHORT);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            /**
+             * close keyboard
+             */
+            imm.hideSoftInputFromWindow(searchButton.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+            NEWS_URL = "https://newsapi.org/v2/everything?q=" + searchEditText.getText().toString() + "&apiKey=fbdf04dd637a47b087b87dd6959ecc5a";
 
 
-                /**
-                 * create alert dialog for user after search button pressed
-                 */
-                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(NewsModule.this);
-                alertBuilder.setTitle("Search : " + searchEditText.getText());
-                alertBuilder.setMessage("Clear current view or add new search to current view");
-                /**
-                 * function to run if users hits the 'Add' button
-                 */
-                alertBuilder.setNegativeButton("Add", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                        new AsyncHttpTask().execute(NEWS_URL);
-                    }
-                });
-                /**
-                 * function to run if users hits the 'clear' button
-                 */
-                alertBuilder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
-                    @Override
-
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        newsArticleList.clear();
-                        adapter.notifyDataSetChanged();
-                        new AsyncHttpTask().execute(NEWS_URL);
-
-                    }
-                });
-
-                /**
-                 * if this is list is not empty, show alert dialog
-                 *
-                 */
-                if (newsArticleList.size() > 0) {
-                    alertBuilder.show();
-                } else {
-                    /**
-                     *  list is empty, just query the search, no need for alert dialog
-                     */
+            /**
+             * create alert dialog for user after search button pressed
+             */
+            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(NewsModule.this);
+            alertBuilder.setTitle("Search : " + searchEditText.getText());
+            alertBuilder.setMessage("Clear current view or add new search to current view");
+            /**
+             * function to run if users hits the 'Add' button
+             */
+            alertBuilder.setNegativeButton("Add", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
                     new AsyncHttpTask().execute(NEWS_URL);
                 }
+            });
+            /**
+             * function to run if users hits the 'clear' button
+             */
+            alertBuilder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+                @Override
+
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    newsArticleList.clear();
+                    adapter.notifyDataSetChanged();
+                    new AsyncHttpTask().execute(NEWS_URL);
+
+                }
+            });
+
+            /**
+             * if this is list is not empty, show alert dialog
+             *
+             */
+            if (newsArticleList.size() > 0) {
+                alertBuilder.show();
+            } else {
                 /**
-                 * notify adapter of changes and refresh listview
+                 *  list is empty, just query the search, no need for alert dialog
                  */
-                adapter.notifyDataSetChanged();
-
-
+                new AsyncHttpTask().execute(NEWS_URL);
             }
+            /**
+             * notify adapter of changes and refresh listview
+             */
+            adapter.notifyDataSetChanged();
+
+
         });
 
         /**
@@ -181,22 +186,7 @@ public class NewsModule extends AppCompatActivity {
     /**
      * shared preferences function to save the last entered search
      */
-    public void saveSearch(View view) {
-        SharedPreferences sharedPref = getSharedPreferences("searchField", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("searchField", searchEditText.getText().toString());
-        editor.apply();
-    }
 
-    /**
-     * shared preferences function to display the last saved search
-     */
-    public void displayLastSearch(View view) {
-        SharedPreferences sharedPref = getSharedPreferences("searchField", Context.MODE_PRIVATE);
-        String searchField = sharedPref.getString("SearchField", "");
-        searchEditText.setText(searchField);
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -222,13 +212,12 @@ public class NewsModule extends AppCompatActivity {
             case R.id.overflow_help:
                 AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(NewsModule.this);
                 helpAlertBuilder.setTitle("Help");
-                helpAlertBuilder.setMessage(description);
+                helpAlertBuilder.setMessage(R.string.news_module_help);
                 helpAlertBuilder.show();
                 break;
 
 
         }
-
 
 
         return true;
@@ -376,6 +365,16 @@ public class NewsModule extends AppCompatActivity {
 
 
         return result;
+    }
+
+    /**
+     * go to news article details activity
+     * activity that shows more details about the article passed in as item
+     */
+
+    public void startFavouritesActivity() {
+        Intent favouritesIntent = new Intent(this, NewsFavourites.class);
+        startActivity(favouritesIntent);
     }
 
     /**
