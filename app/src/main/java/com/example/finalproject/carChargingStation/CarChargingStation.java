@@ -27,6 +27,7 @@ import com.example.finalproject.MainActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.currencyConverter.CurrencyConverter;
 import com.example.finalproject.news.NewsModule;
+import com.example.finalproject.recipeFinder.RecipeFinder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -254,7 +255,7 @@ public class CarChargingStation extends AppCompatActivity {
         startActivity(currencyActivity);
     }
     public void startRecipeActivity() {
-        Intent currencyActivity = new Intent(this, MainActivity.class);
+        Intent currencyActivity = new Intent(this, RecipeFinder.class);
         startActivity(currencyActivity);
     }
 }

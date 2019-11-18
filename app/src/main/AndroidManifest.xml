@@ -15,7 +15,9 @@
 
         <activity android:name=".news.NewsFavourites" />
 
-        <activity android:name=".news.NewsDetails" />
+        <activity android:name=".news.NewsDetails"
+            android:label="@string/news"
+            />
 
         <activity
             android:name=".carChargingStation.CarChargingStation"

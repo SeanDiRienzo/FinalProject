@@ -26,6 +26,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.finalproject.R;
 import com.example.finalproject.carChargingStation.CarChargingStation;
 import com.example.finalproject.currencyConverter.CurrencyConverter;
+import com.example.finalproject.recipeFinder.RecipeFinder;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
@@ -394,6 +395,8 @@ public class NewsModule extends AppCompatActivity {
     }
 
     public void startRecipeActivity() {
+        Intent recipeIntent = new Intent(this, RecipeFinder.class);
+        startActivity(recipeIntent);
 
     }
 
