@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Финальный Проект</string>
+    <string name="charging_station">Заправочные Станции</string>
+    <string name="news">Новости</string>
+    <string name="recipe_finder">Поиск Рецептов</string>
+    <string name="currency">Обмен Валют</string>
+
+    <string name="input_currency">Введите Валюту</string>
+    <string name="btn_convert">Поиск</string>
+    <string-array name="currency_array">
+        <item>Меркурий</item>
+        <item>Венера</item>
+        <item>Земля</item>
+        <item>Марс</item>
+        <item>Юпитер</item>
+        <item>Сатурн</item>
+        <item>Уран</item>
+        <item>Нептун</item>
+    </string-array>
+    <string name="searchButtonText">Поиск</string>
+    <string name="goToFavouritesButtonText">Избранное</string>
+    <string name="deleteFavouriteButton">Уадилть</string>
+    <string name="recipeButtonSearch">Поиск Рецептов </string>
+
+    <string name="latitudeInput">Введите Широту</string>
+    <string name="latitude">Широта: </string>
+    <string name="longitude">Долгота: </string>
+    <string name="longitudeInput">Введите Долготу</string>
+    <string name="searchButton">Поиск</string>
+    <string name="title">Название Локации: </string>
+    <string name="phone">Номер Телефона: </string>
+    <string name="loadMap">Показать на Карте</string>
+    <string name="add">Добавить в Избранное</string>
+    <string name="listOfFavourites">Показать Избранное</string>
+    <string name="deleteButton">Удалить</string>
+    <string name="phoneNull">Недоступно</string>
+    <string name="help">Помощь</string>
+    <string name="help_menu_title_text">Помощь</string>
+
+    <string name="main_menu_car_stations">Поиск Локации</string>
+    <string name="articleBrowserViewText">View article in web browser</string>
+    <string name="favourites_header">Favourites</string>
+    <string name="details_header">Details</string>
+
+</resources>

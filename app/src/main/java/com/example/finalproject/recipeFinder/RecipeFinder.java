@@ -11,6 +11,8 @@
 
 package com.example.finalproject.recipeFinder;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,7 +35,6 @@ import com.example.finalproject.R;
 import com.example.finalproject.carChargingStation.CarChargingStation;
 import com.example.finalproject.currencyConverter.CurrencyConverter;
 import com.example.finalproject.news.NewsModule;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +47,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+
 public class RecipeFinder extends AppCompatActivity {
     /**
      * @param recipeBarStatus: assign object to XML
@@ -56,6 +58,8 @@ public class RecipeFinder extends AppCompatActivity {
      * @param recipeList: array to store JSON parse
      */
     public static final String ACTIVITY_NAME = "Recipe Finder";
+
+    private String description = "Author: Jason Tomkins\n Ver: Milestone 2\n Directions:";
     private String TAG = RecipeFinder.class.getSimpleName();
     private ProgressDialog pDialog;
     private ListView recipeListView;
@@ -108,8 +112,7 @@ public class RecipeFinder extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.recipe_menu, menu);
-
+        inflater.inflate(R.menu.main_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.recipeToolbar);
         return true;
     }
@@ -119,24 +122,26 @@ public class RecipeFinder extends AppCompatActivity {
         switch (item.getItemId()) {
             //what to do when the menu item is selected:
 
-            case R.id.item1:
-                Intent goToParking = new Intent(RecipeFinder.this, CurrencyConverter.class);
+
+
+            case R.id.carCharginStation_Selection:
+                Intent goToParking = new Intent(RecipeFinder.this, CarChargingStation.class);
                 startActivity(goToParking);
                 break;
-            case R.id.item2:
-                Intent goToCurrency = new Intent(RecipeFinder.this, NewsModule.class);
+            case R.id.currency_selection:
+                Intent goToCurrency = new Intent(RecipeFinder.this, CurrencyConverter.class);
                 startActivity(goToCurrency);
                 break;
-            case R.id.item3:
-                Intent goToNews = new Intent(RecipeFinder.this, CarChargingStation.class);
+            case R.id.news_selection:
+                Intent goToNews = new Intent(RecipeFinder.this, NewsModule.class);
                 startActivity(goToNews);
                 break;
-            case R.id.item4:
-                alertExample();
+            case R.id.overflow_help:
 
-                Toast.makeText(RecipeFinder.this,"Author: Jason Tomkins, Activity: RecipeFinder, Click on the Search Button", Toast.LENGTH_LONG).show();
-                Intent goToRecipe = new Intent(RecipeFinder.this, RecipeFinder.class);
-                startActivity(goToRecipe);
+                AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(RecipeFinder.this);
+                helpAlertBuilder.setTitle("Help");
+                helpAlertBuilder.setMessage(description);
+                helpAlertBuilder.show();
                 break;
         }
         return true;
@@ -273,7 +278,9 @@ public class RecipeFinder extends AppCompatActivity {
                 thisRow = getLayoutInflater().inflate(R.layout.activity_recipe_row, null);
 
             TextView titleString = thisRow.findViewById(R.id.txtViewTitle);
-            titleString.setText("Recipe Suggestion Number: " + p + getItem(p) + "\n");
+
+            titleString.setText("Recipe Suggestions: " + p + " is" + getItem(p) + "\n");
+
 /*
             TextView sourceURLString = thisRow.findViewById(R.id.txtViewSourceURL  );
             sourceURLString.setText( "Source URL-------: " + p + " is\n " + getItem(p) +"\n");

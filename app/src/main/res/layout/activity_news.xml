@@ -1,9 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".news.NewsModule">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_menu_news"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/news"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/relativeMenuLayout"
+        android:fillViewport="true">
+
+        <ListView
+            android:id="@+id/articlesListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        </ListView>
+    </ScrollView>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeMenuLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_menu_news">
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/searchButtonText" />
+
+        <EditText
+            android:id="@+id/search_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/goToFavourites"
+            android:layout_toRightOf="@id/searchButton"
+
+
+            />
+
+        <Button
+            android:id="@+id/goToFavourites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/goToFavouritesButtonText" />
+
+        <ProgressBar
+            android:layout_below="@id/search_editText"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:id="@+id/progress_bar"
+            />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -1,4 +1,62 @@
 <resources>
+
+    // Shared
     <string name="app_name">Final Project</string>
+    <string name="charging_station">Charging</string>
+    <string name="news">News</string>
+    <string name="recipe_finder">Recipes</string>
+    <string name="currency">Currency</string>
+    <string name="searchButtonText">Search</string>
+    <string name="goToFavouritesButtonText">Favourites</string>
+    <string name="deleteFavouriteButton">Delete</string>
+    <string name="add">Add To Favourites</string>
+
+    // News
+    <string name="articleBrowserViewText">View article in web browser</string>
+    <string name="favourites_header">Favourites</string>
+    <string name="details_header">Details</string>
+    <string name="favourites_help">"Author: Sean Di Rienzo \nVersion Number: 1.0 \nInstructions: \n1- Long Press to Delete \n"
+                "2 - Normal Press to view details \n"</string>
+    <string name="news_details_help">"Author: Sean Di Rienzo \nVersion Number: 1.0 \nInstructions: \n1- Click 'Add to Favourites' to save the article for later \n"
+                "2 - Click 'View in browser' to open the article in a browser \n"</string>
+    <string name="news_module_help">"Author: Sean Di Rienzo \nVersion Number: 1.0 \nInstructions: \n1- Enter a search term \n"
+            "2 - Press 'Search' button \n" +
+            "3 - Click an article from the list to view more details \n" +
+            "4 - Click 'Favourites' to view your list of saved articles \n";</string>
+    // CarCharging
+    <string name="searchButton">Find</string>
+    <string name="title">Location Title: </string>
+    <string name="phone">Contact Telephone Number: </string>
+    <string name="latitudeInput">Enter latitude</string>
+    <string name="latitude">Latitude: </string>
+    <string name="longitude">Longitude: </string>
+    <string name="longitudeInput">Enter longitude</string>
+    <string name="loadMap">Load Directions In Google Maps</string>
+    <string name="listOfFavourites">See List Of Favourite Stations</string>
+    // Recipe
     <string name="recipeButtonSearch">Search for a Recipe </string>
+
+    // Currency
+    <string name="input_currency">Enter currency</string>
+    <string name="btn_convert">Search</string>
+    <string-array name="currency_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+
+
+    <string name="deleteButton">Delete</string>
+    <string name="phoneNull">Not available</string>
+    <string name="help">Help</string>
+    <string name="help_menu_title_text">Help</string>
+
+    <string name="main_menu_car_stations">Car Charging Stations Finder</string>
+
+
 </resources>
