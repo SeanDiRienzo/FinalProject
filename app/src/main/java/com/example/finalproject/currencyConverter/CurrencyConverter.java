@@ -127,7 +127,7 @@ public class CurrencyConverter extends AppCompatActivity {
 
 
 
-        }
+
 
         public class CurrencyService extends AsyncTask<String, Void, JSONObject> {
             public static final String REQUEST_METHOD = "GET";

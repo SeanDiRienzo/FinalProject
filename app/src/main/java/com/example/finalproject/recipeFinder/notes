@@ -1,10 +1,37 @@
-        // ACTIONS FOR LOGIN BUTTON
-        Button loginButton = findViewById(R.id.buttonRecipeFinder);
-        loginButton.setOnClickListener(clk -> {
-            // Next activity
-            Intent recipeFinderActivity = new Intent(MainActivity.this, RecipeFinder.class);
-            startActivity(recipeFinderActivity);
-        });
+API KEY INFORMATION:
 
 
 
+
+
+Website: https://www.food2fork.com/
+user name:
+password: Algonquin1
+
+
+Your API Details
+Current API Plan: Free
+API Key: 45239b72fccf255c80cf01ab76a18a96
+50pings/ day
+
+API Documentation: https://www.food2fork.com/about/api
+https://www.food2fork.com/api/search?key=YOUR_API_KEY&q=chicken%20breast&page=2
+https://www.food2fork.com/api/search?key=45239b72fccf255c80cf01ab76a18a96&q=chicken%20breast&page=2
+
+
+
+GitHub Example:
+https://gist.github.com/alexhsamuel/59a1d2cd3f6983f907fabfbd276eaaa9
+
+
+
+Column Definitions:
+
+	image_url:      URL of the image
+source_url:         Original Url of the recipe on the publisher's site
+	f2f_url:        Url of the recipe on Food2Fork.com
+	title:          Title of the recipe
+	publisher:      Name of the Publisher
+	publisher_url:  Base url of the publisher
+    social_rank:    The Social Ranking of the Recipe (As determined by our Ranking Algorithm)
+	ingredients:    The ingredients of this

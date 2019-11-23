@@ -12,35 +12,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".news.DetailContainer"></activity>
-        <activity android:name=".news.DetailsFragment" />
+
         <activity android:name=".news.NewsFavourites" />
-        <activity
-            android:name=".news.NewsDetails"
-            android:label="@string/news" />
+
+        <activity android:name=".news.DetailContainer"/>
+
         <activity
             android:name=".carChargingStation.CarChargingStation"
             android:label="@string/charging_station" />
         <activity android:name=".carChargingStation.StationView" />
         <activity android:name=".carChargingStation.CarChargingFavouriteStations" />
+
         <activity
             android:name=".recipeFinder.RecipeFinder"
             android:label="@string/recipe_finder" />
+
         <activity
             android:name=".currencyConverter.CurrencyConverter"
             android:label="@string/currency" />
+
         <activity
             android:name=".news.NewsModule"
             android:label="@string/news" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

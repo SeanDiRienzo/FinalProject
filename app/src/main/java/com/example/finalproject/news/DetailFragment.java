@@ -1,113 +1,103 @@
 package com.example.finalproject.news;
 
-import android.content.Context;
+
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+
 import com.example.finalproject.R;
+import com.squareup.picasso.Picasso;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DetailFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class DetailFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private boolean isTablet;
+    private Bundle dataFromActivity;
+    private long id;
+    private String title;
+    private String description;
+    private Button goToUrlButton;
+    private Button addToFavouritesButton;
+    private Button openInBrowser;
+    private TextView articleDescription;
+    private TextView articleTitle;
+    private ImageView articleImage;
+    private TextView articleUrl;
+    private Intent lastIntent;
+    private NewsArticleObject articleObject;
+    private MyDatabaseOpenHelper dbOpener;
 
-    private OnFragmentInteractionListener mListener;
 
-    public DetailFragment() {
-        // Required empty public constructor
+    public void setTablet(boolean tablet) {
+        isTablet = tablet;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DetailFragment newInstance(String param1, String param2) {
-        DetailFragment fragment = new DetailFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        dbOpener = new MyDatabaseOpenHelper(DetailFragment.super.getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
-    }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+        Bundle bundle = getArguments();
+        articleObject = (NewsArticleObject) bundle.getSerializable("Article");
+        // Inflate the layout for this fragment
+        View result = inflater.inflate(R.layout.activity_news_details, container, false);
+        articleTitle = result.findViewById(R.id.details_title);
+        articleDescription = result.findViewById(R.id.details_description);
+        articleImage = result.findViewById(R.id.details_image);
+        articleUrl = result.findViewById(R.id.url_textview);
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+        //show the message
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        articleTitle.setText(articleObject.getTitle());
+        articleDescription.setText(articleObject.getDescription());
+        Picasso.get().load(articleObject.getImageUrl()).into(articleImage);
+        articleUrl.setText(articleObject.getArticleUrl());
+        addToFavouritesButton = result.findViewById(R.id.add_to_favourites_button);
+
+        SQLiteDatabase db = dbOpener.getWritableDatabase();
+        addToFavouritesButton.setOnClickListener(fav -> {
+
+            ContentValues newRowValues = new ContentValues();
+            newRowValues.put(MyDatabaseOpenHelper.COL_TITLE, articleObject.getTitle());
+            newRowValues.put(MyDatabaseOpenHelper.COL_DESCRIPTION, articleObject.getDescription());
+            newRowValues.put(MyDatabaseOpenHelper.COL_ARTICLEURL, articleObject.getArticleUrl());
+            newRowValues.put(MyDatabaseOpenHelper.COL_IMAGEURL, articleObject.getImageUrl());
+            long newId = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newRowValues);
+            AlertDialog.Builder builder = new AlertDialog.Builder(DetailFragment.super.getActivity());
+            AlertDialog dialog = builder.setMessage("Added Article to Favourites")
+                    .setPositiveButton("OK", (d, w) -> {  /* nothing */})
+                    .create();
+            dialog.show();
+
+        });
+
+        openInBrowser = result.findViewById(R.id.go_to_url_button);
+        openInBrowser.setOnClickListener(browser -> {
+
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(articleObject.getArticleUrl()));
+            startActivity(browserIntent);
+
+        });
+
+        return result;
     }
 }

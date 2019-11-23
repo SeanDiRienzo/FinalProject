@@ -3,100 +3,292 @@
  * Student Number: 040494380
  * Final Project Assignment: RecipeFinder Milestone #1 includes the following:
  * 1 ListView, 1 ProgressBar, 1 Button, 1 EditText, 1 Toast, 1 Snackbar and 1 Custom Dialogue
+ * <p>
+ * Final Project Assignment: RecipeFinder Milestone 2 includes the following:
+ * Id, Title, Image and URL display in ListView
+ * AsynckTask Activity
  */
+
 package com.example.finalproject.recipeFinder;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.finalproject.R;
-
+import com.example.finalproject.carChargingStation.CarChargingStation;
+import com.example.finalproject.currencyConverter.CurrencyConverter;
+import com.example.finalproject.news.NewsModule;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import androidx.appcompat.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AlertDialog;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.google.android.material.snackbar.Snackbar;
+import java.util.HashMap;
 
 public class RecipeFinder extends AppCompatActivity {
     /**
      * @param recipeBarStatus: assign object to XML
      * @param progress: integer assigned to variable to calculate 0 to 100 with 1 second delay
      * @param ACTIVITY_NAME: Enum to declare which activity is running on the Debug Server Output
-     * @param recipeArray: is the array used to hold values in memory
+     * @param recipeList: is the array used to hold values in memory
+     * @param pDialog: is for the timed dialogue box
+     * @param recipeList: array to store JSON parse
      */
-    ProgressBar recipeBarStatus;
-    int progress = 0;
-    public static final String ACTIVITY_NAME = "RECIPE_FINDER";
-    ArrayList<String> recipeArray = new ArrayList<>(Arrays.asList("Chicken Soup", "Beef Broccoli", "Tomato Soup"));
+    public static final String ACTIVITY_NAME = "Recipe Finder";
+    private String description = "Author: Jason Tomkins\n Ver: Milestone 2\n Directions:";
+    private String TAG = RecipeFinder.class.getSimpleName();
+    private ProgressDialog pDialog;
+    private ListView recipeListView;
     BaseAdapter myAdapter;
+    private Button buttonSearch;
+    int progress = 0;
+    ProgressBar recipeBar;
+    private static String url = "https://www.food2fork.com/api/search?key=45239b72fccf255c80cf01ab76a18a96&q=chicken%20breast&page=2";
+    ArrayList<String> recipeList = new ArrayList<>(Arrays.asList());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_finder);
-    /**
-    * @param recipeBarStatus: initialize and reference XML
-    * @param theList: initialize and reference XML
-    * - OnClickListener added to show toast when row clicked
-    */
-        ProgressBar recipeBarStatus = findViewById(R.id.progress_bar);
-        ListView theList = findViewById(R.id.theList);
-        theList.setAdapter(myAdapter = new MyListAdapter());
-        theList.setOnItemClickListener((lv, vw, pos, id) -> {
-            Toast.makeText(RecipeFinder.this,
-                    "You clicked on Row Number:" + pos, Toast.LENGTH_SHORT).show();
-        });
+        //recipeList = new ArrayList<>();
+
         /**
-         * @param searchButton: initialize and reference XML
-         * - OnClickListener added to add row to ListView + Array + Show Snackbar
-         * @param recipeArray: when clicked add item and get array Size.
-         * @param myAdapter: refresh/trigger refresh ListView
+         * @param recipeBarStatus: initialize and reference XML
+         * @param theList: initialize and reference XML
+         * - OnClickListener added to show toast when row clicked
          */
-        Button searchButton = findViewById(R.id.buttonSearch);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        buttonSearch = (Button) findViewById(R.id.buttonSearch);
+        recipeBar = (ProgressBar) findViewById(R.id.progressBar);
+
+
+        recipeListView = (ListView) findViewById(R.id.theList);
+        recipeListView.setAdapter(myAdapter = new MyListAdapter());
+
+
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View clik) {
-                //setProgressValue(progress); // CALLS METHOD for Progress Bar
-                recipeArray.add("Item " + (1 + recipeArray.size()));
-                myAdapter.notifyDataSetChanged(); //update yourself
-                Snackbar.make(searchButton, "Inserted Sample Data to Array:" + recipeArray, Snackbar.LENGTH_LONG).show();
+            public void onClick(View v) {
+                setProgressValue(progress); // CALLS METHOD for Progress Bar
+                new GetRecipes().execute();
+                alertExample();
+                if (buttonSearch != null) {
+                    recipeBar.setVisibility(View.VISIBLE);
+                }
+                System.out.println("1 RecipeList Print:           " + recipeList);
+                System.out.println("RecipeListView Print:           " + recipeListView);
+                myAdapter.notifyDataSetChanged();
             }
         });
-        /**
-         * Refresh the screen by pulling the screen up or down
-         * @param refresher: initialize and reference XML tags that encapsulate ListView
-         */
-        SwipeRefreshLayout refresher = findViewById(R.id.refresher);
-        refresher.setOnRefreshListener(() -> {
-            recipeArray.add("Item " + (1 + recipeArray.size()));
-            myAdapter.notifyDataSetChanged(); //update yourself
-            refresher.setRefreshing(false);  //get rid of spinning wheel;
-        });
-        /**
-         * @param b: New Instance of Builder function initialized
-         * - Creates a Custom Dialogue Box when opening the app
-         */
-        AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setTitle("Hello!")
-                .setMessage("Welcome to the RecipeFinder using Food2Fork API")
-                .setPositiveButton("I'm so excited", (clk, btn) -> { /* do this when clicked */ })
-                .setNegativeButton("Just give me recipes!!", (clk, btn) -> { /* do this when clicked */ })
-                .create()
-                .show();
-
+        Toolbar tbar = (Toolbar) findViewById(R.id.recipeToolbar);
+        setSupportActionBar(tbar);
     } // END onCreate()
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.recipeToolbar);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            //what to do when the menu item is selected:
+
+            case R.id.carCharginStation_Selection:
+                Intent goToParking = new Intent(RecipeFinder.this, CarChargingStation.class);
+                startActivity(goToParking);
+                break;
+            case R.id.currency_selection:
+                Intent goToCurrency = new Intent(RecipeFinder.this, CurrencyConverter.class);
+                startActivity(goToCurrency);
+                break;
+            case R.id.news_selection:
+                Intent goToNews = new Intent(RecipeFinder.this, NewsModule.class);
+                startActivity(goToNews);
+                break;
+            case R.id.overflow_help:
+
+                AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(RecipeFinder.this);
+                helpAlertBuilder.setTitle("Help");
+                helpAlertBuilder.setMessage(description);
+                helpAlertBuilder.show();
+                break;
+
+        }
+        return true;
+    } // End onOptionsItemSelected
+
+    public void alertExample() {
+        View middle = getLayoutInflater().inflate(R.layout.activity_recipe_alertbox, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("")
+                .setPositiveButton("Positive", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Do something
+                    }
+                })
+                .setNegativeButton("Negative", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // What to do on Cancel
+                    }
+                }).setView(middle);
+        builder.create().show();
+    } // End alertExample()
+
+    private class GetRecipes extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(RecipeFinder.this);
+            pDialog.setMessage("Please wait... Downloading Recipes");
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            GetJSONData getJSONData = new GetJSONData();
+
+            // Making a request to url and getting response
+            String urlString = getJSONData.establishConnection(url);
+            Log.i(TAG, "Response from url: " + urlString);
+            if (urlString != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(urlString);
+                    JSONArray recipeArray = jsonObj.getJSONArray("recipes");
+                    // loop through All Recipes
+                    for (int i = 0; i < recipeArray.length(); i++) {
+                        JSONObject rowItem = recipeArray.getJSONObject(i);
+
+                        String recipeIDString = rowItem.getString("recipe_id");
+                        String publisherString = rowItem.getString("publisher");
+                        String titleString = rowItem.getString("title");
+                        String sourceURLString = rowItem.getString("source_url");
+                        String imageRecipeString = rowItem.getString("image_url");
+
+/* ATTRIBUTES NOT USED FOR PARSING
+                        String f2f_urlString = rowItem.getString("f2f_url");
+                        String socialRankString = rowItem.getString("social_rank");
+                        String publisherURLString = rowItem.getString("publisher_url");
+*/
+
+                        HashMap<String, String> recipeItems = new HashMap<>();
+
+                        // adding each child node to HashMap key => value
+                        recipeItems.put("\n" + "Recipe ID: ", recipeIDString + "\n");
+                        recipeItems.put("\n" + "Publisher: ", publisherString + "\n");
+                        recipeItems.put("\n" + "Title: ", titleString + "\n");
+                        recipeItems.put("\n" + "Source URL: ", sourceURLString + "\n");
+                        recipeItems.put("\n" + "Image: ", imageRecipeString + "\n");
+
+                        System.out.println("Print out Recipes: " + recipeItems);
+                        //recipeList.add(String.valueOf(recipeItems));
+                        recipeList.add(String.valueOf(recipeItems));
+                        System.out.println("2 RecipeList Print:           " + recipeList);
+
+                    }
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(),
+                                    "Json parsing error: " + e.getMessage(),
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    });
+                }
+            } else {
+                Log.e(TAG, "Couldn't get json from server.");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),
+                                "Couldn't get json from server. Check LogCat for possible errors!",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
+                });
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            if (pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+            myAdapter.notifyDataSetChanged();
+        } // END onPostExecute
+
+    } // End GetRecipes Class Async
+
+
+    private class MyListAdapter extends BaseAdapter {
+
+        public int getCount() {
+            return recipeList.size();
+        } //This function tells how many objects to show
+
+        public String getItem(int position) {
+            return recipeList.get(position);
+        }  //This returns the string at position p
+
+        public long getItemId(int p) {
+            return p;
+        } //This returns the database id of the item at position p
+
+        public View getView(int p, View recycled, ViewGroup parent) {
+            View thisRow = recycled;
+
+            if (recycled == null)
+                thisRow = getLayoutInflater().inflate(R.layout.activity_recipe_row, null);
+
+            TextView titleString = thisRow.findViewById(R.id.txtViewTitle);
+            titleString.setText("Recipe Suggestions: " + p + " is" + getItem(p) + "\n");
+/*
+            TextView sourceURLString = thisRow.findViewById(R.id.txtViewSourceURL  );
+            sourceURLString.setText( "Source URL-------: " + p + " is\n " + getItem(p) +"\n");
+
+            TextView recipeIDString = thisRow.findViewById(R.id.txtViewRecipe_id  );
+            recipeIDString.setText( "Recipe ID: " + p + " is" + getItem(p) +"\n");
+
+            TextView publisherString = thisRow.findViewById(R.id.txtViewPublisher  );
+            publisherString.setText( "Publisher: " + p + " is\n " + getItem(p) +"\n");
+
+
+            TextView imageRecipeString = thisRow.findViewById(R.id.txtViewImage_url  );
+            imageRecipeString.setText( "Image-------: " + p + " is\n " + getItem(p) +"\n");
+*/
+            return thisRow;
+        }
+    }
 
     /**
      * The next method is only for the Progress Update Bar
@@ -104,89 +296,49 @@ public class RecipeFinder extends AppCompatActivity {
      * @param progress is an Integer value from 0 to 100 with a 1 second delay
      */
     private void setProgressValue(final int progress) {
-        recipeBarStatus.setProgress(progress);
+        recipeBar.setProgress(progress);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(900);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                setProgressValue(progress + 10);
+                setProgressValue(progress + 25);
             }
         });
         thread.start();
-    } // END METHOD
-    private class MyListAdapter extends BaseAdapter {
-        public int getCount() {
-            return recipeArray.size();
-        } //This function tells how many objects to show
-        public String getItem(int position) {
-            return recipeArray.get(position);
-        }  //This returns the string at position p
-        public long getItemId(int p) {
-            return p;
-        } //This returns the database id of the item at position p
-        /**
-         * @param p:        object you want to display at row position
-         * @param recycled: View variable
-         * @param parent:   root
-         * @return newView: a new view
-         */
-        public View getView(int p, View recycled, ViewGroup parent) {
-        /**
-         * @param recipeArray: to  count the size of the number of objects in the array to inflate
-         * @param itemText:    ff
-         */
-            View thisRow = recycled;
-            if (recycled == null)
-                thisRow = getLayoutInflater().inflate(R.layout.activity_recipe_row, null);
-            TextView itemText = thisRow.findViewById(R.id.idNumberField);
-            itemText.setText("ID#:  " + p + " is " + getItem(p));
-            TextView numberText = thisRow.findViewById(R.id.numberField);
-            numberText.setText("Your number is " + p);
-            return thisRow;
-        } // End Method
-    } // END MyListAdapter Class
+    } // END setProgressValue
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(ACTIVITY_NAME, "In Function onResume()");
+        Log.e(ACTIVITY_NAME, "onResume()");
     }
+
     @Override
     protected void onDestroy() {
-        Log.e(ACTIVITY_NAME, "In Function onDestroy()");
+        Log.e(ACTIVITY_NAME, "onDestroy()");
         super.onDestroy();
     }
+
     @Override
     protected void onStart() {
-        Log.e(ACTIVITY_NAME, "In Function onStart()");
+        Log.e(ACTIVITY_NAME, "onStart()");
         super.onStart();
     }
+
     @Override
     protected void onPause() {
-        Log.e(ACTIVITY_NAME, "In Function onPause()");
+        Log.e(ACTIVITY_NAME, "onPause()");
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        Log.e(ACTIVITY_NAME, "In Function onStop()");
+        Log.e(ACTIVITY_NAME, "onStop()");
         super.onStop();
     }
-} // END RecipeFinder Class
-
-
-
-
-
-
-
-
-
-
-
-
+}
 

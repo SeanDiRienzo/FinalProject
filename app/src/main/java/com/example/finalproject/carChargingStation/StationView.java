@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -31,19 +32,19 @@ public class StationView extends AppCompatActivity {
         setContentView(R.layout.activity_car_charging_station_item_details);
         ChargingStationObject itemClicked = (ChargingStationObject) getIntent().getSerializableExtra("itemClicked");
 
-        EditText title = (EditText) findViewById(R.id.title);
+        TextView title = (TextView) findViewById(R.id.title);
         String stationTitle = itemClicked.getTitle();
         title.setText(stationTitle);
 
-        EditText latitude = (EditText) findViewById(R.id.latitudeResult);
+        TextView latitude = (TextView) findViewById(R.id.latitudeResult);
         double latitudeValue = itemClicked.getLatitude();
         latitude.setText(Double.toString(latitudeValue));
 
-        EditText longitude = (EditText) findViewById(R.id.longitudeResult);
+        TextView longitude = (TextView) findViewById(R.id.longitudeResult);
         double longitudeValue = itemClicked.getLongitude();
         longitude.setText(Double.toString(longitudeValue));
 
-        EditText phone = (EditText) findViewById(R.id.phoneResult);
+        TextView phone = (TextView) findViewById(R.id.phoneResult);
         String phoneNumber = itemClicked.getPhone();
         if(phoneNumber.equals("null")){
             phone.setText(R.string.phoneNull);

@@ -1,6 +1,8 @@
 package com.example.finalproject.carChargingStation;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,6 +11,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -16,14 +20,21 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.example.finalproject.MainActivity;
 import com.example.finalproject.R;
+import com.example.finalproject.currencyConverter.CurrencyConverter;
+import com.example.finalproject.news.NewsModule;
+import com.example.finalproject.recipeFinder.RecipeFinder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -57,6 +68,9 @@ public class CarChargingStation extends AppCompatActivity {
      * shared preferences instance
      */
     private SharedPreferences sharedPref;
+    private String description;
+    private Toolbar main_menu;
+    private ProgressBar progressBar;
     /**
      * Method loads layout, reacts to user's action
      * @param savedInstanceState reference to a Bundle object that is passed into the onCreate method
@@ -65,11 +79,18 @@ public class CarChargingStation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_charging_station);
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
         Button findButton = (Button)findViewById(R.id.searchButton);
         final EditText latitude = findViewById(R.id.latitudeInput);
         longitude = (EditText)findViewById(R.id.longitudeInput);
         theList = (ListView)findViewById(R.id.the_list);
         sharedPref = getSharedPreferences("SharedPreferencesCarChargingStation", MODE_PRIVATE);
+
+        main_menu = findViewById(R.id.main_menu_car_stations);
+        setSupportActionBar(main_menu);
+
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,16 +120,24 @@ public class CarChargingStation extends AppCompatActivity {
     /**
      * Class connects to the server, reads and process the data
      */
-    private class DownloadFilesTask extends AsyncTask<String, String, String> {
+    private class DownloadFilesTask extends AsyncTask<String, Integer, String> {
         /**
          * dialog to show a progression of downloading to the user
          */
-        private ProgressDialog p;
+        //private ProgressDialog p;
 
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(values[0]);
+
+            //Update GUI stuff only:
+        }
         /**
          * Method shows a progression of downloading data from the server to the user
          */
-        @Override
+  /*      @Override
         protected void onPreExecute() {
             super.onPreExecute();
             p = new ProgressDialog(CarChargingStation.this);
@@ -116,7 +145,8 @@ public class CarChargingStation extends AppCompatActivity {
             p.setCancelable(false);
             p.show();
         }
-        /**
+     */
+       /**
          * Methods connects to the server, retrieves the data about car charging stations
          * @param urls link to the server
          * @return data about car charging stations
@@ -127,18 +157,19 @@ public class CarChargingStation extends AppCompatActivity {
             try {
                 URL link = new URL(urls[0]);
                 urlConnection = (HttpURLConnection) link.openConnection();
+                publishProgress(25);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             try {
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                InputStreamReader reader = new InputStreamReader(in);
-
-                int data = reader.read();
-                while (data != -1) {
-                    result += (char) data;
-                    data = reader.read();
+                InputStream in = urlConnection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                publishProgress(50);
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    result += line;
                 }
+                publishProgress(70);
                 return result;
             }
                 catch (IOException e) {
@@ -156,7 +187,7 @@ public class CarChargingStation extends AppCompatActivity {
          * @param result data about car charging stations retrieved by doInBackground method()
          */
         protected void onPostExecute(String result) {
-            p.dismiss();
+            stations.clear(); // remove old results
             try {
                 JSONArray jsonArray = new JSONArray(result);
                 for(int i = 0; i < jsonArray.length(); i++){
@@ -175,7 +206,57 @@ public class CarChargingStation extends AppCompatActivity {
             }
             CarChargingStationAdapter adapter = new CarChargingStationAdapter(getApplicationContext(), stations, false);
             theList.setAdapter(adapter);
+            progressBar.setVisibility(View.INVISIBLE);
         }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.currency_selection:
+                startCurrencyActivity();
+                break;
+            case R.id.news_selection:
+                startNewsActivity();
+                break;
+
+            case R.id.recipe_selection:
+                startRecipeActivity();
+                break;
+
+            case R.id.overflow_help:
+                AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(CarChargingStation.this);
+                description = "Author: Svitlana Tsushka \nVersion Number: 1.0 \nInstructions: \n1- Enter latitude and longitude \n" +
+                        "2 - Press 'Search' button \n" +
+                        "3 - Click a station from the list and see detailed information \n" +
+                        "4 - Click 'Load location in Google Maps' to see location of a station \n" +
+                        "5 - Click 'Add to favourites' to add a location to the list of favourite stations \n" +
+                        "6 - Click 'See list of favourite station' to go to the next page with favourite stations \n" +
+                        "7 - Click 'Delete' to delete a station from the list of favourite stations";
+                helpAlertBuilder.setTitle("Help");
+                helpAlertBuilder.setMessage(description);
+                helpAlertBuilder.show();
+                break;
+        }
+        return true;
+    }
+    public void startCurrencyActivity() {
+        Intent currencyActivity = new Intent(this, CurrencyConverter.class);
+        startActivity(currencyActivity);
+    }
+    public void startNewsActivity() {
+        Intent currencyActivity = new Intent(this, NewsModule.class);
+        startActivity(currencyActivity);
+    }
+    public void startRecipeActivity() {
+        Intent currencyActivity = new Intent(this, RecipeFinder.class);
+        startActivity(currencyActivity);
     }
 }
 

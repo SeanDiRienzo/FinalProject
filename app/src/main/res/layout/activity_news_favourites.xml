@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".news.NewsModule">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_menu_favourites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/favourites_header" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/main_menu_favourites"
         android:fillViewport="true">
 
         <ListView
@@ -20,15 +26,6 @@
 
         </ListView>
     </ScrollView>
-
-    <Button
-        android:id="@+id/deleteFromFavouritesButton"
-        android:layout_width="118dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/deleteFavouriteButton" />
-
 
 
 </RelativeLayout>
