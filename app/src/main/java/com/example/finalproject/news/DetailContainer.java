@@ -23,17 +23,9 @@ public class DetailContainer extends AppCompatActivity {
         dFragment.setTablet(false); //tell the Fragment that it's on a phone.
 
         getSupportFragmentManager()
-                .
+                .beginTransaction()
+                .add(R.id.fragmentLocation, dFragment)
 
-                        beginTransaction()
-                .
-
-                        add(R.id.fragmentLocation, dFragment)
-                .
-
-                        addToBackStack("")
-                .
-
-                        commit();
+                .commit();
     }
 }
