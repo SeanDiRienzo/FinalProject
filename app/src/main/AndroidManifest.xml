@@ -28,6 +28,8 @@
         <activity
             android:name=".recipeFinder.RecipeFinder"
             android:label="@string/recipe_finder" />
+            <activity android:name=".recipeFinder.EmptyActivity"
+            />
 
         <activity
             android:name=".currencyConverter.CurrencyConverter"

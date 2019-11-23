@@ -35,8 +35,8 @@ public class ReciperFinder_DetailFragment extends Fragment {
         View result =  inflater.inflate(R.layout.activity_recipe_fragment, container, false);
 
         //show the message
-        TextView message = (TextView)result.findViewById(R.id.message);
-        message.setText(dataFromActivity.getString(RecipeFinder.ITEM_SELECTED));
+        TextView recipes = (TextView)result.findViewById(R.id.reicpeListPull);
+        recipes.setText(dataFromActivity.getString(RecipeFinder.ITEM_SELECTED));
 
         //show the id:
         TextView idView = (TextView)result.findViewById(R.id.idText);

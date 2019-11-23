@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentLocation"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:id="@+id/fragmentLocation">
+    android:background="@color/colorPrimary">
 
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="30dp"
-        android:id="@+id/message"
-        android:hint="MessageHere"
-        android:background="@android:color/holo_purple"
-
-        />
-
-    <EditText
+        android:id="@+id/idText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/message"
-        android:id="@+id/idText"
+        android:layout_marginTop="50dp"
         android:hint="ID="
 
         />
 
+    <TextView
+        android:id="@+id/reicpeListPull"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginTop="30dp"
+        android:background="@android:color/holo_green_dark"
+        android:layout_below="@+id/idText"
+        android:hint="@string/recipe_finder" />
+
     <Button
+        android:id="@+id/deleteButton"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
         android:layout_alignParentBottom="true"
         android:text="@string/DeleteMsg"
-        android:id="@+id/deleteButton"/>
+        android:textSize="12dp" />
 </RelativeLayout>
