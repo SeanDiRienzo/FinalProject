@@ -1,12 +1,13 @@
 /**
  * Student Name: Jason Tomkins
  * Student Number: 040494380
- * Final Project Assignment: RecipeFinder Milestone #1 includes the following:
+*            Final Project Assignment: RecipeFinder Milestone #1 includes the following:
  * 1 ListView, 1 ProgressBar, 1 Button, 1 EditText, 1 Toast, 1 Snackbar and 1 Custom Dialogue
- * <p>
- * Final Project Assignment: RecipeFinder Milestone 2 includes the following:
+* <p> *      Final Project Assignment: RecipeFinder Milestone 2 includes the following:
  * Id, Title, Image and URL display in ListView
- * AsynckTask Activity
+ * AsynckTask Activity * </p>
+* <p> *     Final Project Assignment: RecipeFinder Milestone 3 includes the following:
+ *     Fragment, Items in ListView stored to phone, delete items, Shared Preferences * </p>
  */
 
 package com.example.finalproject.recipeFinder;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,11 +28,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.finalproject.R;
 import com.example.finalproject.carChargingStation.CarChargingStation;
 import com.example.finalproject.currencyConverter.CurrencyConverter;
@@ -38,13 +40,9 @@ import com.example.finalproject.news.NewsModule;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 
@@ -57,17 +55,23 @@ public class RecipeFinder extends AppCompatActivity {
      * @param pDialog: is for the timed dialogue box
      * @param recipeList: array to store JSON parse
      */
-    public static final String ACTIVITY_NAME = "Recipe Finder";
 
     private String description = "Author: Jason Tomkins\n Ver: Milestone 2\n Directions:";
     private String TAG = RecipeFinder.class.getSimpleName();
     private ProgressDialog pDialog;
     private ListView recipeListView;
-    BaseAdapter myAdapter;
     private Button buttonSearch;
     int progress = 0;
     ProgressBar recipeBar;
+    BaseAdapter myAdapter;
+    // FRAGMENT
+    public static final String ITEM_SELECTED = "ITEM";
+    public static final String ITEM_POSITION = "POSITION";
+    public static final String ITEM_ID = "ID";
+    public static final int EMPTY_ACTIVITY = 345;
     private static String url = "https://www.food2fork.com/api/search?key=45239b72fccf255c80cf01ab76a18a96&q=chicken%20breast&page=2";
+    //private static String url = "http://torunski.ca/FinalProjectChickenBreast.json";
+    public static final String ACTIVITY_NAME = "Recipe Finder";
     ArrayList<String> recipeList = new ArrayList<>(Arrays.asList());
 
 
@@ -85,14 +89,52 @@ public class RecipeFinder extends AppCompatActivity {
         buttonSearch = (Button) findViewById(R.id.buttonSearch);
         recipeBar = (ProgressBar) findViewById(R.id.progressBar);
 
-
         recipeListView = (ListView) findViewById(R.id.theList);
         recipeListView.setAdapter(myAdapter = new MyListAdapter());
 
+        // START FRAGMENT
+        boolean isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
+
+        recipeListView.setOnItemClickListener( (list, item, position, id) -> {
+
+            Bundle dataToPass = new Bundle();
+            dataToPass.putString(ITEM_SELECTED, recipeList.get(position));
+            dataToPass.putInt(ITEM_POSITION, position);
+            dataToPass.putLong(ITEM_ID, id);
+            if(isTablet)
+            {
+                ReciperFinder_DetailFragment dFragment = new ReciperFinder_DetailFragment(); //add a DetailFragment
+                dFragment.setArguments( dataToPass ); //pass it a bundle for information
+                dFragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
+                        .addToBackStack("AnyName") //make the back button undo the transaction
+                        .commit(); //actually load the fragment.
+            }
+            else //isPhone
+            {
+                Intent nextActivity = new Intent(RecipeFinder.this, EmptyActivity.class);
+                nextActivity.putExtras(dataToPass); //send data to next activity
+                startActivityForResult(nextActivity, EMPTY_ACTIVITY); //make the transition
+            }
+        });
+
+
+        //Shared Preferences and create Log - Last searched item
+        EditText searchText = findViewById(R.id.searchText); // Pulling from msgText to move a variable to Shared Preferences
+        SharedPreferences prefs = getSharedPreferences("RecipeFinder", MODE_PRIVATE);
+        String chat = prefs.getString("recipeText", "");
+        searchText.setText(chat);
 
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //SHARED PREFERENCES
+                SharedPreferences.Editor chatEditor = prefs.edit(); // SharedPrefs
+                chatEditor.putString("recipeText", searchText.getText().toString());
+                chatEditor.commit();
+
                 setProgressValue(progress); // CALLS METHOD for Progress Bar
                 new GetRecipes().execute();
                 alertExample();
@@ -121,9 +163,6 @@ public class RecipeFinder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             //what to do when the menu item is selected:
-
-
-
             case R.id.carCharginStation_Selection:
                 Intent goToParking = new Intent(RecipeFinder.this, CarChargingStation.class);
                 startActivity(goToParking);
@@ -256,7 +295,6 @@ public class RecipeFinder extends AppCompatActivity {
 
     } // End GetRecipes Class Async
 
-
     private class MyListAdapter extends BaseAdapter {
 
         public int getCount() {
@@ -280,7 +318,6 @@ public class RecipeFinder extends AppCompatActivity {
             TextView titleString = thisRow.findViewById(R.id.txtViewTitle);
 
             titleString.setText("Recipe Suggestions: " + p + " is" + getItem(p) + "\n");
-
 /*
             TextView sourceURLString = thisRow.findViewById(R.id.txtViewSourceURL  );
             sourceURLString.setText( "Source URL-------: " + p + " is\n " + getItem(p) +"\n");
@@ -299,9 +336,10 @@ public class RecipeFinder extends AppCompatActivity {
         }
     }
 
+
+
+
     /**
-     * The next method is only for the Progress Update Bar
-     *
      * @param progress is an Integer value from 0 to 100 with a 1 second delay
      */
     private void setProgressValue(final int progress) {
@@ -319,6 +357,29 @@ public class RecipeFinder extends AppCompatActivity {
         });
         thread.start();
     } // END setProgressValue
+
+    //This function only gets called on the phone. The tablet never goes to a new activity
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == EMPTY_ACTIVITY)
+        {
+            if(resultCode == RESULT_OK) //if you hit the delete button instead of back button
+            {
+                long id = data.getLongExtra(ITEM_ID, 0);
+                deleteMessageId((int)id);
+            }
+        }
+    }
+
+    public void deleteMessageId(int id)
+    {
+        Log.i("Delete this message:" , " id="+id);
+        recipeList.remove(id);
+        myAdapter.notifyDataSetChanged();
+    }
+
 
     @Override
     protected void onResume() {

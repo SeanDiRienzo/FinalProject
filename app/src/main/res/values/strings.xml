@@ -35,7 +35,7 @@
     <string name="listOfFavourites">See List Of Favourite Stations</string>
     // Recipe
     <string name="recipeButtonSearch">Search for a Recipe </string>
-
+    <string name="DeleteMsg">Delete This Message</string>
     // Currency
     <string name="input_currency">Enter currency</string>
     <string name="btn_convert">Search</string>

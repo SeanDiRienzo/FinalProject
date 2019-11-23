@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recipe Finder Activity - Jason Tomkins"
+        android:textSize="20dp" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/recipeToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/title" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+
+        android:layout_below="@+id/recipeToolbar"
+        android:max="100"
+        android:progress="0"
+        android:visibility="invisible"
+        tools:ignore="UnknownId" />
+
+        <RelativeLayout
+            android:id="@+id/topRecipe"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/progressBar">
+
+            <EditText
+                android:id="@+id/searchText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:ems="10"
+                android:hint="Think of food"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/buttonSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_toRightOf="@+id/searchText"
+                android:text="@string/recipeButtonSearch" />
+
+            <ListView
+                android:id="@+id/theList"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/buttonSearch" />
+        </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fragmentLocation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/progressBar"
+        android:layout_toRightOf="@id/topRecipe"
+        android:background="@color/colorAccent" />
+
+</RelativeLayout>

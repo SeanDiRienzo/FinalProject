@@ -37,6 +37,7 @@
     <string name="help_menu_title_text">Aide</string>
     <string name="help_menu_dialog_text"></string>
     <string name="main_menu_car_stations">Localisateur de stations de recharge</string>
+    <string name="DeleteMsg">Supprimer le message</string>
 
 
 </resources>
