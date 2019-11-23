@@ -185,7 +185,7 @@ public class NewsModule extends AppCompatActivity {
                             .beginTransaction()
 
                             .replace(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
-                            .addToBackStack("AnyName") //make the back button undo the transaction
+
                             .commit(); //actually load the fragment.
                 } else //isPhone
                 {
