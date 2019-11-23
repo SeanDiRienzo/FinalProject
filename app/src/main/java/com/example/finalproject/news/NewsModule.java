@@ -70,6 +70,7 @@ public class NewsModule extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
+        boolean isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
         mProgressBar = findViewById(R.id.progress_bar);
         sharedPref = getSharedPreferences("News", MODE_PRIVATE);
         mProgressBar.setVisibility(View.VISIBLE);
@@ -171,17 +172,35 @@ public class NewsModule extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 NewsArticleObject item = (NewsArticleObject) parent.getItemAtPosition(position);
-                /**
-                 * call function to start the details activity
-                 * pass in the selected article object
-                 * @param item
-                 */
-                startDetailsactivity(item);
+                Bundle dataToPass = new Bundle();
+                dataToPass.putSerializable("Article", item);
+
+                if (isTablet) {
+                    DetailFragment dFragment = new DetailFragment(); //add a DetailFragment
+                    dFragment.setArguments(dataToPass); //pass it a bundle for information
+                    dFragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
+
+                    getSupportFragmentManager()
+
+                            .beginTransaction()
+
+                            .replace(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
+                            .addToBackStack("AnyName") //make the back button undo the transaction
+                            .commit(); //actually load the fragment.
+                } else //isPhone
+                {
+                    Intent nextActivity = new Intent(NewsModule.this, DetailContainer.class);
+                    nextActivity.putExtras(dataToPass); //send data to next activity
+                    startActivity(nextActivity); //make the transition
+                }
+
+
             }
         });
 
 
     }
+
 
     /**
      * shared preferences function to save the last entered search
@@ -377,21 +396,8 @@ public class NewsModule extends AppCompatActivity {
         startActivity(favouritesIntent);
     }
 
-    /**
-     * go to news article details activity
-     * activity that shows more details about the article passed in as item
-     *
-     * @param item
-     */
-    public void startDetailsactivity(NewsArticleObject item) {
-        /**
-         * start the details activity, put the object in the intent to be retrieved upon creation
-         */
-        Intent detailsActivity = new Intent(this, NewsDetails.class);
-        detailsActivity.putExtra("articleObject", item);
 
-        startActivity(detailsActivity);
-    }
+
 
     public void startRecipeActivity() {
         Intent recipeIntent = new Intent(this, RecipeFinder.class);

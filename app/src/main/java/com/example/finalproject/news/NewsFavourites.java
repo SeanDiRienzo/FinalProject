@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -66,7 +67,8 @@ public class NewsFavourites extends AppCompatActivity {
                  * pass in the selected article object
                  * @param item
                  */
-                startDetailsactivity(item);
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getArticleUrl()));
+                startActivity(browserIntent);
             }
         });
         newsArticleFavouritesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -153,15 +155,7 @@ public class NewsFavourites extends AppCompatActivity {
         startActivity(currencyActivity);
     }
 
-    public void startDetailsactivity(NewsArticleObject item) {
-        /**
-         * start the details activity, put the object in the intent to be retrieved upon creation
-         */
-        Intent detailsActivity = new Intent(this, NewsDetails.class);
-        detailsActivity.putExtra("articleObject", item);
 
-        startActivity(detailsActivity);
-    }
 
     private void loadFavourites() {
         String[] columns = {MyDatabaseOpenHelper.COL_ID, MyDatabaseOpenHelper.COL_TITLE, MyDatabaseOpenHelper.COL_DESCRIPTION,
