@@ -396,21 +396,8 @@ public class NewsModule extends AppCompatActivity {
         startActivity(favouritesIntent);
     }
 
-    /**
-     * go to news article details activity
-     * activity that shows more details about the article passed in as item
-     *
-     * @param item
-     */
-    public void startDetailsactivity(NewsArticleObject item) {
-        /**
-         * start the details activity, put the object in the intent to be retrieved upon creation
-         */
-        Intent detailsActivity = new Intent(this, NewsDetails.class);
-        detailsActivity.putExtra("articleObject", item);
 
-        startActivity(detailsActivity);
-    }
+
 
     public void startRecipeActivity() {
         Intent recipeIntent = new Intent(this, RecipeFinder.class);
