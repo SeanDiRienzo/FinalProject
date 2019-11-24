@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.finalproject.R;
 
 public class DetailContainer extends AppCompatActivity {
+    /** Container activity with a frame layout to inflate a fragment into*/
     private NewsArticleObject articleObject;
 
     @Override

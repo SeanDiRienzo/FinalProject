@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 
 
 public class DetailFragment extends Fragment {
+    /** Details Fragment to display details about a selected article*/
 
     private boolean isTablet;
     private Bundle dataFromActivity;
@@ -41,6 +42,7 @@ public class DetailFragment extends Fragment {
 
 
     public void setTablet(boolean tablet) {
+        /** check which layout to use */
         isTablet = tablet;
     }
 
@@ -55,9 +57,11 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        /** get arguments from fragment manager */
         Bundle bundle = getArguments();
+        /** create article object from serializable object data */
         articleObject = (NewsArticleObject) bundle.getSerializable("Article");
-        // Inflate the layout for this fragment
+        /** Inflate the layout for this fragment */
         View result = inflater.inflate(R.layout.activity_news_details, container, false);
         articleTitle = result.findViewById(R.id.details_title);
         articleDescription = result.findViewById(R.id.details_description);
