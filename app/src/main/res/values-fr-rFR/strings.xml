@@ -39,5 +39,15 @@
     <string name="main_menu_car_stations">Localisateur de stations de recharge</string>
     <string name="DeleteMsg">Supprimer le recette</string>
     <string name="SaveRecipe">Sauve-garde cette recette</string>
-
+    <string name="articleBrowserViewText">View article in web browser</string>
+    <string name="favourites_header">Favourites</string>
+    <string name="details_header">Details</string>
+    <string name="favourites_help">"Author: Sean Di Rienzo \nVersion Number: 1.0 \nInstructions: \n1- Long Press to Delete \n"
+                "2 - Normal Press to view details \n"</string>
+    <string name="news_details_help">"Author: Sean Di Rienzo \nVersion Number: 1.0 \nInstructions: \n1- Click 'Add to Favourites' to save the article for later \n"
+                "2 - Click 'View in browser' to open the article in a browser \n"</string>
+    <string name="news_module_help">"Author: Sean Di Rienzo \nVersion Number: 1.0 \nInstructions: \n1- Enter a search term \n"
+            "2 - Press 'Search' button \n" +
+            "3 - Click an article from the list to view more details \n" +
+            "4 - Click 'Favourites' to view your list of saved articles \n";</string>
 </resources>
