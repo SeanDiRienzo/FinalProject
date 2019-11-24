@@ -2,22 +2,24 @@ package com.example.finalproject.recipeFinder;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.example.finalproject.R;
-
 import androidx.fragment.app.Fragment;
+
+
 
 public class ReciperFinder_DetailFragment extends Fragment {
 
     private boolean isTablet;
     private Bundle dataFromActivity;
     private long id;
+    private Button buttonSaveRecipe;
 
     public void setTablet(boolean tablet) {
         isTablet = tablet;
@@ -65,5 +67,9 @@ public class ReciperFinder_DetailFragment extends Fragment {
             }
         });
         return result;
-    }
-}
+
+
+
+
+    } // endOnCreateView()
+} //End RecipeFinder_DetailFragment

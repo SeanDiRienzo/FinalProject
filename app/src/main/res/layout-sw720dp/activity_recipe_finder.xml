@@ -66,6 +66,6 @@
         android:layout_height="match_parent"
         android:layout_below="@id/progressBar"
         android:layout_toRightOf="@id/topRecipe"
-        android:background="@color/colorAccent" />
+        android:background="@android:color/background_light" />
 
 </RelativeLayout>

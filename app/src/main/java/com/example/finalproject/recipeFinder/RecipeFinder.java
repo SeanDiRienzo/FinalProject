@@ -3,9 +3,11 @@
  * Student Number: 040494380
 *            Final Project Assignment: RecipeFinder Milestone #1 includes the following:
  * 1 ListView, 1 ProgressBar, 1 Button, 1 EditText, 1 Toast, 1 Snackbar and 1 Custom Dialogue
+ *
 * <p> *      Final Project Assignment: RecipeFinder Milestone 2 includes the following:
  * Id, Title, Image and URL display in ListView
  * AsynckTask Activity * </p>
+ *
 * <p> *     Final Project Assignment: RecipeFinder Milestone 3 includes the following:
  *     Fragment, Items in ListView stored to phone, delete items, Shared Preferences * </p>
  */
@@ -48,11 +50,20 @@ import androidx.appcompat.widget.Toolbar;
 
 public class RecipeFinder extends AppCompatActivity {
     /**
-     * @param recipeBarStatus: assign object to XML
-     * @param progress: integer assigned to variable to calculate 0 to 100 with 1 second delay
-     * @param ACTIVITY_NAME: Enum to declare which activity is running on the Debug Server Output
-     * @param recipeList: is the array used to hold values in memory
+     * @param description: instructs the user in the Toolbar Overflow menu
+     * @param TAG: return the simple name of the class
      * @param pDialog: is for the timed dialogue box
+     * @param recipeListView: initialize the XML element
+     * @param recipeBarStatus: assign object to XML
+     * @param buttonSearch: is the main button within the activitiy. OnClickListener to pull JSON data from server and display in ListView
+     * @param progress: integer assigned to variable to calculate 0 to 100 with 1 second delay
+     * @param recipeBar: initialize the XML element
+     * @param myAdapter: object for dynamic ListView Adapter
+     * @param ITEM_SELECTED: used for fragment
+     * @param ITEM_POSITION: used for fragment
+     * @param ITEM_ID: used for fragment
+     * @param url: string to URL address for Chicken Breast
+     * @param ACTIVITY_NAME: Enum to declare which activity is running on the Debug Server Output
      * @param recipeList: array to store JSON parse
      */
 
@@ -82,7 +93,8 @@ public class RecipeFinder extends AppCompatActivity {
         //recipeList = new ArrayList<>();
 
         /**
-         * @param recipeBarStatus: initialize and reference XML
+         * @param buttonSearch: initialize and reference to XML
+         * @param recipeBar: initialize and reference XML
          * @param theList: initialize and reference XML
          * - OnClickListener added to show toast when row clicked
          */
@@ -95,7 +107,7 @@ public class RecipeFinder extends AppCompatActivity {
         // START FRAGMENT
         boolean isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
 
-        recipeListView.setOnItemClickListener( (list, item, position, id) -> {
+        recipeListView.setOnItemClickListener( (list, item, position, id) -> { // sets on click listener on the list view item
 
             Bundle dataToPass = new Bundle();
             dataToPass.putString(ITEM_SELECTED, recipeList.get(position));
@@ -121,7 +133,7 @@ public class RecipeFinder extends AppCompatActivity {
         });
 
 
-        //Shared Preferences and create Log - Last searched item
+        //Shared Preferences and create Log for Last searched item
         EditText searchText = findViewById(R.id.searchText); // Pulling from msgText to move a variable to Shared Preferences
         SharedPreferences prefs = getSharedPreferences("RecipeFinder", MODE_PRIVATE);
         String chat = prefs.getString("recipeText", "");

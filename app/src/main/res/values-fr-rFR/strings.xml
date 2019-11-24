@@ -38,6 +38,6 @@
     <string name="help_menu_dialog_text"></string>
     <string name="main_menu_car_stations">Localisateur de stations de recharge</string>
     <string name="DeleteMsg">Supprimer le recette</string>
-
+    <string name="SaveRecipe">Sauve-garde cette recette</string>
 
 </resources>

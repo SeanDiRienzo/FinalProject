@@ -36,6 +36,7 @@
     // Recipe
     <string name="recipeButtonSearch">Search for a Recipe </string>
     <string name="DeleteMsg">Delete This Recipe</string>
+    <string name="SaveRecipe">Save This Recipe</string>
     // Currency
     <string name="input_currency">Enter currency</string>
     <string name="btn_convert">Search</string>
