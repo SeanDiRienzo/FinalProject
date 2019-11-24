@@ -68,7 +68,6 @@ public class CarChargingStation extends AppCompatActivity {
      * shared preferences instance
      */
     private SharedPreferences sharedPref;
-    private String description;
     private Toolbar main_menu;
     private ProgressBar progressBar;
     /**
@@ -79,6 +78,8 @@ public class CarChargingStation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_charging_station);
+
+        boolean isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
 
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
@@ -107,10 +108,29 @@ public class CarChargingStation extends AppCompatActivity {
         });
         theList.setOnItemClickListener(( parent,  view,  position,  id) ->{
             ChargingStationObject chosenOne = stations.get(position);
-            Intent nextPage = new Intent(CarChargingStation.this, StationView.class);
-            nextPage.putExtra("itemClicked", chosenOne);
-            startActivity(nextPage);
+            Bundle dataToPass = new Bundle();
+            dataToPass.putSerializable("Station", chosenOne);
+
+            if (isTablet) {
+                StationFragment dFragment = new StationFragment(); //add a DetailFragment
+                dFragment.setArguments(dataToPass); //pass it a bundle for information
+                dFragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
+
+                getSupportFragmentManager()
+
+                        .beginTransaction()
+
+                        .replace(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
+
+                        .commit(); //actually load the fragment.
+            } else //isPhone
+            {
+                Intent nextActivity = new Intent(CarChargingStation.this, DetailContainer.class);
+                nextActivity.putExtras(dataToPass); //send data to next activity
+                startActivity(nextActivity); //make the transition
+            }
         });
+
         String latitudeValue = sharedPref.getString("Latitude", "");
         latitude.setText(latitudeValue);
         String longitudeValue = sharedPref.getString("Longitude", "");
@@ -232,15 +252,8 @@ public class CarChargingStation extends AppCompatActivity {
 
             case R.id.overflow_help:
                 AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(CarChargingStation.this);
-                description = "Author: Svitlana Tsushka \nVersion Number: 1.0 \nInstructions: \n1- Enter latitude and longitude \n" +
-                        "2 - Press 'Search' button \n" +
-                        "3 - Click a station from the list and see detailed information \n" +
-                        "4 - Click 'Load location in Google Maps' to see location of a station \n" +
-                        "5 - Click 'Add to favourites' to add a location to the list of favourite stations \n" +
-                        "6 - Click 'See list of favourite station' to go to the next page with favourite stations \n" +
-                        "7 - Click 'Delete' to delete a station from the list of favourite stations";
                 helpAlertBuilder.setTitle("Help");
-                helpAlertBuilder.setMessage(description);
+                helpAlertBuilder.setMessage(R.string.description);
                 helpAlertBuilder.show();
                 break;
         }

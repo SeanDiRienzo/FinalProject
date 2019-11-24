@@ -20,7 +20,7 @@
         <activity
             android:name=".carChargingStation.CarChargingStation"
             android:label="@string/charging_station" />
-        <activity android:name=".carChargingStation.StationView" />
+        <activity android:name=".carChargingStation.DetailContainer" />
         <activity android:name=".carChargingStation.CarChargingFavouriteStations" />
 
         <activity
