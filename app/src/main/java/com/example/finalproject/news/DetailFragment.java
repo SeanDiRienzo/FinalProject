@@ -65,7 +65,7 @@ public class DetailFragment extends Fragment {
         articleUrl = result.findViewById(R.id.url_textview);
 
 
-        //show the message
+
 
         articleTitle.setText(articleObject.getTitle());
         articleDescription.setText(articleObject.getDescription());

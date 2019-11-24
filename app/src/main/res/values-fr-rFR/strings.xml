@@ -46,7 +46,7 @@
     <string name="news_details_help">"Author: Sean Di Rienzo \nVersion Number: 1.0 \nInstructions: \n1- Click 'Add to Favourites' to save the article for later \n"
                 "2 - Click 'View in browser' to open the article in a browser \n"</string>
     <string name="news_module_help">"Author: Sean Di Rienzo \nVersion Number: 1.0 \nInstructions: \n1- Enter a search term \n"
-            "2 - Press 'Search' button \n" +
-            "3 - Click an article from the list to view more details \n" +
+            "2 - Press 'Search' button \n"
+            "3 - Click an article from the list to view more details \n"
             "4 - Click 'Favourites' to view your list of saved articles \n";</string>
 </resources>
