@@ -35,9 +35,10 @@
     <string name="phoneNull">Non disponible</string>
     <string name="help">Aide</string>
     <string name="help_menu_title_text">Aide</string>
-
+    <string name="help_menu_dialog_text"></string>
     <string name="main_menu_car_stations">Localisateur de stations de recharge</string>
-
+    <string name="DeleteMsg">Supprimer le recette</string>
+    <string name="SaveRecipe">Sauve-garde cette recette</string>
     <string name="articleBrowserViewText">View article in web browser</string>
     <string name="favourites_header">Favourites</string>
     <string name="details_header">Details</string>
