@@ -68,7 +68,13 @@ public class CarChargingStation extends AppCompatActivity {
      * shared preferences instance
      */
     private SharedPreferences sharedPref;
+    /**
+     * toolbar instance
+     */
     private Toolbar main_menu;
+    /**
+     * progress bar instance
+     */
     private ProgressBar progressBar;
     /**
      * Method loads layout, reacts to user's action
@@ -151,21 +157,7 @@ public class CarChargingStation extends AppCompatActivity {
             super.onProgressUpdate(values);
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setProgress(values[0]);
-
-            //Update GUI stuff only:
         }
-        /**
-         * Method shows a progression of downloading data from the server to the user
-         */
-  /*      @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            p = new ProgressDialog(CarChargingStation.this);
-            p.setMessage("Please wait...");
-            p.setCancelable(false);
-            p.show();
-        }
-     */
        /**
          * Methods connects to the server, retrieves the data about car charging stations
          * @param urls link to the server
@@ -229,6 +221,12 @@ public class CarChargingStation extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
         }
     }
+
+    /**
+     * Method inflates menu, adds items to the action bar
+     * @param menu menu
+     * @return boolean if menu is inflated
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -236,6 +234,11 @@ public class CarChargingStation extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Method responses to the click on menu item
+     * @param menuItem menu item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -259,14 +262,24 @@ public class CarChargingStation extends AppCompatActivity {
         }
         return true;
     }
+
+    /**
+     * Methods goes to the next activity (Currency)
+     */
     public void startCurrencyActivity() {
         Intent currencyActivity = new Intent(this, CurrencyConverter.class);
         startActivity(currencyActivity);
     }
+    /**
+     * Methods goes to the next activity (News)
+     */
     public void startNewsActivity() {
         Intent currencyActivity = new Intent(this, NewsModule.class);
         startActivity(currencyActivity);
     }
+    /**
+     * Methods goes to the next activity (Recipe)
+     */
     public void startRecipeActivity() {
         Intent currencyActivity = new Intent(this, RecipeFinder.class);
         startActivity(currencyActivity);
