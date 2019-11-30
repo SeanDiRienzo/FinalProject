@@ -33,9 +33,8 @@
     <string name="listOfFavourites">Voir la liste des stations préférées</string>
     <string name="deleteButton">Supprimer</string>
     <string name="phoneNull">Non disponible</string>
-    <string name="help">Aide</string>
-    <string name="help_menu_title_text">Aide</string>
-    <string name="help_menu_dialog_text"></string>
+
+
     <string name="main_menu_car_stations">Localisateur de stations de recharge</string>
     <string name="DeleteMsg">Supprimer le recette</string>
     <string name="SaveRecipe">Sauve-garde cette recette</string>
@@ -50,4 +49,8 @@
             "2 - Press 'Search' button \n" +
             "3 - Click an article from the list to view more details \n" +
             "4 - Click 'Favourites' to view your list of saved articles \n";</string>
+
+
+    <string name="help">Aide</string>
+    <string name="description">Auteur: Svitlana</string>
 </resources>

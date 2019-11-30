@@ -2,7 +2,6 @@ package com.example.finalproject.recipeFinder;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,26 +30,26 @@ public class ReciperFinder_DetailFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         dataFromActivity = getArguments();
-        id = dataFromActivity.getLong(RecipeFinder.ITEM_ID );
+        id = dataFromActivity.getLong(RecipeFinder.ITEM_ID);
 
         // Inflate the layout for this fragment
-        View result =  inflater.inflate(R.layout.activity_recipe_fragment, container, false);
+        View result = inflater.inflate(R.layout.activity_recipe_fragment, container, false);
 
         //show the message
-        TextView recipes = (TextView)result.findViewById(R.id.reicpeListPull);
+        TextView recipes = (TextView) result.findViewById(R.id.reicpeListPull);
         recipes.setText(dataFromActivity.getString(RecipeFinder.ITEM_SELECTED));
 
         //show the id:
-        TextView idView = (TextView)result.findViewById(R.id.idText);
+        TextView idView = (TextView) result.findViewById(R.id.idText);
         idView.setText("ID=" + id);
 
         // get the delete button, and add a click listener:
-        Button deleteButton = (Button)result.findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener( clk -> {
+        Button deleteButton = (Button) result.findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(clk -> {
 
-            if(isTablet) { //both the list and details are on the screen:
-                RecipeFinder parent = (RecipeFinder)getActivity();
-                parent.deleteMessageId((int)id); //this deletes the item and updates the list
+            if (isTablet) { //both the list and details are on the screen:
+                RecipeFinder parent = (RecipeFinder) getActivity();
+                parent.deleteMessageId((int) id); //this deletes the item and updates the list
                 //now remove the fragment since you deleted it from the database:
                 // this is the object to be removed, so remove(this):
                 parent.getSupportFragmentManager().beginTransaction().remove(this).commit();
@@ -60,16 +59,25 @@ public class ReciperFinder_DetailFragment extends Fragment {
             {
                 EmptyActivity parent = (EmptyActivity) getActivity();
                 Intent backToChatRoomActivity = new Intent();
-                backToChatRoomActivity.putExtra(RecipeFinder.ITEM_ID, dataFromActivity.getLong(RecipeFinder.ITEM_ID ));
+                backToChatRoomActivity.putExtra(RecipeFinder.ITEM_ID, dataFromActivity.getLong(RecipeFinder.ITEM_ID));
 
                 parent.setResult(Activity.RESULT_OK, backToChatRoomActivity); //send data back to FragmentExample in onActivityResult()
                 parent.finish(); //go back
             }
         });
+
+        Button saveButton = (Button) result.findViewById(R.id.saveRecipeButton);
+        saveButton.setOnClickListener(clk -> {
+
+        });
         return result;
 
-
-
-
     } // endOnCreateView()
-} //End RecipeFinder_DetailFragment
+}  //End RecipeFinder_DetailFragment
+
+
+
+
+
+
+

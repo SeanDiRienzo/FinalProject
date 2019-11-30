@@ -20,6 +20,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -160,6 +162,17 @@ public class RecipeFinder extends AppCompatActivity {
         });
         Toolbar tbar = (Toolbar) findViewById(R.id.recipeToolbar);
         setSupportActionBar(tbar);
+        System.out.println("Database Connected");
+        //CALL THE DATABASE HELPER CLASS
+        try {
+            MyDatabaseOpenHelper dbOpener = new MyDatabaseOpenHelper(this);
+            SQLiteDatabase db = dbOpener.getWritableDatabase();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            System.out.println("SQL LITE EXCEPTION from RecipeFinder: "+e);
+        }
+
+
     } // END onCreate()
 
     @Override
