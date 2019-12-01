@@ -16,6 +16,7 @@
         android:layout_below="@id/main_menu_details"
         android:gravity="center_horizontal"
         android:text="@string/titleHeader"
+        android:textStyle="bold"
 
         />
 
@@ -33,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/details_title"
-        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
         android:gravity="center_horizontal"
         android:text="@string/descriptionHeader"
 
@@ -53,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/details_description"
-        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
         android:gravity="center_horizontal"
         android:text="@string/urlHeader" />
 
@@ -76,14 +77,14 @@
         android:id="@+id/go_to_url_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/details_image"
+        android:layout_alignParentBottom="true"
         android:text="@string/articleBrowserViewText" />
 
     <Button
         android:id="@+id/add_to_favourites_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/go_to_url_button"
+        android:layout_above="@id/go_to_url_button"
         android:text="@string/add"
 
         />

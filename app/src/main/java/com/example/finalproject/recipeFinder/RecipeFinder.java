@@ -1,25 +1,28 @@
 /**
  * Student Name: Jason Tomkins
  * Student Number: 040494380
-*            Final Project Assignment: RecipeFinder Milestone #1 includes the following:
+ * Final Project Assignment: RecipeFinder Milestone #1 includes the following:
  * 1 ListView, 1 ProgressBar, 1 Button, 1 EditText, 1 Toast, 1 Snackbar and 1 Custom Dialogue
  *
-* <p> *      Final Project Assignment: RecipeFinder Milestone 2 includes the following:
+ * <p> *      Final Project Assignment: RecipeFinder Milestone 2 includes the following:
  * Id, Title, Image and URL display in ListView
  * AsynckTask Activity * </p>
  *
-* <p> *     Final Project Assignment: RecipeFinder Milestone 3 includes the following:
- *     Fragment, Items in ListView stored to phone, delete items, Shared Preferences * </p>
+ * <p> *     Final Project Assignment: RecipeFinder Milestone 3 includes the following:
+ * Fragment, Items in ListView stored to phone, delete items, Shared Preferences * </p>
  */
 
 package com.example.finalproject.recipeFinder;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,18 +38,21 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.finalproject.R;
 import com.example.finalproject.carChargingStation.CarChargingStation;
 import com.example.finalproject.currencyConverter.CurrencyConverter;
 import com.example.finalproject.news.NewsModule;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import androidx.appcompat.widget.Toolbar;
 
+import androidx.appcompat.widget.Toolbar;
 
 public class RecipeFinder extends AppCompatActivity {
     /**
@@ -67,7 +73,7 @@ public class RecipeFinder extends AppCompatActivity {
      * @param recipeList: array to store JSON parse
      */
 
-    private String description = "Author: Jason Tomkins\n Ver: Milestone 2\n Directions:";
+    private String description = "Author: Jason Tomkins\n Ver: Milestone 2\n Directions: Click Search";
     private String TAG = RecipeFinder.class.getSimpleName();
     private ProgressDialog pDialog;
     private ListView recipeListView;
@@ -92,11 +98,13 @@ public class RecipeFinder extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_finder);
         //recipeList = new ArrayList<>();
 
-        /**
+/**
          * @param buttonSearch: initialize and reference to XML
          * @param recipeBar: initialize and reference XML
          * @param theList: initialize and reference XML
          * - OnClickListener added to show toast when row clicked
+         * @param recipeListView; initialize and reference to XML
+         *
          */
         buttonSearch = (Button) findViewById(R.id.buttonSearch);
         recipeBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -104,40 +112,55 @@ public class RecipeFinder extends AppCompatActivity {
         recipeListView = (ListView) findViewById(R.id.theList);
         recipeListView.setAdapter(myAdapter = new MyListAdapter());
 
-        // START FRAGMENT
+/**
+         * Start Fragment
+         * @param isTablet: boolean variable to determine XML screen layout (tablet vs. phone)
+         * @param recipeListView; set onClickListerner to open Fragment when user clicks on item
+         * @param nextActivity; create an object to pass data to fragment
+         */
         boolean isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
 
-        recipeListView.setOnItemClickListener( (list, item, position, id) -> { // sets on click listener on the list view item
+        recipeListView.setOnItemClickListener((list, item, position, id) -> { // sets on click listener on the list view item
 
             Bundle dataToPass = new Bundle();
             dataToPass.putString(ITEM_SELECTED, recipeList.get(position));
             dataToPass.putInt(ITEM_POSITION, position);
             dataToPass.putLong(ITEM_ID, id);
-            if(isTablet)
-            {
+            if (isTablet) {
                 ReciperFinder_DetailFragment dFragment = new ReciperFinder_DetailFragment(); //add a DetailFragment
-                dFragment.setArguments( dataToPass ); //pass it a bundle for information
+                dFragment.setArguments(dataToPass); //pass it a bundle for information
                 dFragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
                 getSupportFragmentManager()
                         .beginTransaction()
                         .add(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
                         .addToBackStack("AnyName") //make the back button undo the transaction
                         .commit(); //actually load the fragment.
-            }
-            else //isPhone
+            } else //isPhone
             {
                 Intent nextActivity = new Intent(RecipeFinder.this, EmptyActivity.class);
                 nextActivity.putExtras(dataToPass); //send data to next activity
                 startActivityForResult(nextActivity, EMPTY_ACTIVITY); //make the transition
             }
         });
-
+/**
+ * START SHARED PREFERENCES
+ * @param searchText; initialize value and reference to XML
+ * @param chat; create local variable to get text from searchText
+ */
 
         //Shared Preferences and create Log for Last searched item
         EditText searchText = findViewById(R.id.searchText); // Pulling from msgText to move a variable to Shared Preferences
         SharedPreferences prefs = getSharedPreferences("RecipeFinder", MODE_PRIVATE);
         String chat = prefs.getString("recipeText", "");
         searchText.setText(chat);
+
+/**
+         * START SearchButton onClickListener
+         *@param buttonSearch; setOnClickListener to start, Shared Preference, ProgressBar and make visible, Pull Data from WebServer, Alert Box and Notify ListView of change with  notifyDataSetChanged()
+         *@param onClick; method onClick save text to Shared Preference
+         *@param GetRecipes(); Will subsequently pull the data from the WebServer and parse the JSON format
+         *@param dbOpener; establish connection to SQLite3 Database
+         */
 
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +183,15 @@ public class RecipeFinder extends AppCompatActivity {
         });
         Toolbar tbar = (Toolbar) findViewById(R.id.recipeToolbar);
         setSupportActionBar(tbar);
+        System.out.println("Database Connected");
+        //CALL THE DATABASE HELPER CLASS
+        try {
+            MyDatabaseOpenHelper dbOpener = new MyDatabaseOpenHelper(this);
+            SQLiteDatabase db = dbOpener.getWritableDatabase();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            System.out.println("SQL LITE EXCEPTION from RecipeFinder: " + e);
+        }
     } // END onCreate()
 
     @Override
@@ -169,7 +201,7 @@ public class RecipeFinder extends AppCompatActivity {
         inflater.inflate(R.menu.main_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.recipeToolbar);
         return true;
-    }
+    } // End onCreateOptionsMenu
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -188,7 +220,6 @@ public class RecipeFinder extends AppCompatActivity {
                 startActivity(goToNews);
                 break;
             case R.id.overflow_help:
-
                 AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(RecipeFinder.this);
                 helpAlertBuilder.setTitle("Help");
                 helpAlertBuilder.setMessage(description);
@@ -247,7 +278,7 @@ public class RecipeFinder extends AppCompatActivity {
                         String sourceURLString = rowItem.getString("source_url");
                         String imageRecipeString = rowItem.getString("image_url");
 
-/* ATTRIBUTES NOT USED FOR PARSING
+/* ATTRIBUTES NOT USED IN THE JSON PARSING
                         String f2f_urlString = rowItem.getString("f2f_url");
                         String socialRankString = rowItem.getString("social_rank");
                         String publisherURLString = rowItem.getString("publisher_url");
@@ -289,11 +320,11 @@ public class RecipeFinder extends AppCompatActivity {
                                 "Couldn't get json from server. Check LogCat for possible errors!",
                                 Toast.LENGTH_LONG)
                                 .show();
-                    }
+                    } // End void run
                 });
-            }
+            } // End else
             return null;
-        }
+        } // End doInBackground()
 
         @Override
         protected void onPostExecute(Void result) {
@@ -304,7 +335,6 @@ public class RecipeFinder extends AppCompatActivity {
             }
             myAdapter.notifyDataSetChanged();
         } // END onPostExecute
-
     } // End GetRecipes Class Async
 
     private class MyListAdapter extends BaseAdapter {
@@ -345,11 +375,8 @@ public class RecipeFinder extends AppCompatActivity {
             imageRecipeString.setText( "Image-------: " + p + " is\n " + getItem(p) +"\n");
 */
             return thisRow;
-        }
-    }
-
-
-
+        } // End Recycler View
+    } // End MyListAdapter
 
     /**
      * @param progress is an Integer value from 0 to 100 with a 1 second delay
@@ -375,23 +402,20 @@ public class RecipeFinder extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == EMPTY_ACTIVITY)
-        {
-            if(resultCode == RESULT_OK) //if you hit the delete button instead of back button
+        if (requestCode == EMPTY_ACTIVITY) {
+            if (resultCode == RESULT_OK) //if you hit the delete button instead of back button
             {
                 long id = data.getLongExtra(ITEM_ID, 0);
-                deleteMessageId((int)id);
+                deleteMessageId((int) id);
             }
         }
     }
 
-    public void deleteMessageId(int id)
-    {
-        Log.i("Delete this message:" , " id="+id);
+    public void deleteMessageId(int id) {
+        Log.i("Delete this message:", " id=" + id);
         recipeList.remove(id);
         myAdapter.notifyDataSetChanged();
     }
-
 
     @Override
     protected void onResume() {
@@ -422,5 +446,5 @@ public class RecipeFinder extends AppCompatActivity {
         Log.e(ACTIVITY_NAME, "onStop()");
         super.onStop();
     }
-}
+} // END RecipeFinder.java
 
