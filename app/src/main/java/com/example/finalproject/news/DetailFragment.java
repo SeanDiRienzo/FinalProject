@@ -70,6 +70,10 @@ public class DetailFragment extends Fragment {
      */
     private MyDatabaseOpenHelper dbOpener;
 
+    private TextView titleText;
+    private TextView descriptionText;
+    private TextView urlText;
+
     /**
      * check which layout to use
      */
@@ -104,6 +108,8 @@ public class DetailFragment extends Fragment {
         articleDescription = result.findViewById(R.id.details_description);
         articleImage = result.findViewById(R.id.details_image);
         articleUrl = result.findViewById(R.id.url_textview);
+        titleText = result.findViewById(R.id.details_title_header);
+        descriptionText = result.findViewById(R.id.details_description_header);
 
 
         articleTitle.setText(articleObject.getTitle());

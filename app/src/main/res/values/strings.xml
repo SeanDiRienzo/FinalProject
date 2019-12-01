@@ -1,6 +1,6 @@
 <resources>
 
-    // Shared
+
     <string name="app_name">Final Project</string>
     <string name="charging_station">Charging</string>
     <string name="news">News</string>
@@ -11,7 +11,7 @@
     <string name="deleteFavouriteButton">Delete</string>
     <string name="add">Add To Favourites</string>
 
-    // News
+
     <string name="articleBrowserViewText">View article in web browser</string>
     <string name="favourites_header">Favourites</string>
     <string name="details_header">Details</string>
@@ -23,7 +23,7 @@
             "2 - Press 'Search' button \n"
             "3 - Click an article from the list to view more details \n"
             "4 - Click 'Favourites' to view your list of saved articles \n";</string>
-    // CarCharging
+
     <string name="searchButton">Find</string>
     <string name="title">Location Title: </string>
     <string name="phone">Contact Telephone Number: </string>
@@ -41,11 +41,11 @@
                         6 - Click "See list of favourite station' to go to the next page with favourite stations\n
                         7 - Click "Delete" to delete a station from the list of favourite stations</string>
 
-    // Recipe
+
     <string name="recipeButtonSearch">Search for a Recipe </string>
     <string name="DeleteMsg">Delete This Recipe</string>
     <string name="SaveRecipe">Save This Recipe</string>
-    // Currency
+
     <string name="input_currency">Enter currency</string>
     <string name="btn_convert">Search</string>
     <string-array name="currency_array">
@@ -66,8 +66,9 @@
     <string name="help_menu_title_text">Help</string>
 
     <string name="main_menu_car_stations">Car Charging Stations Finder</string>
-
-
+    <string name="titleHeader">Title</string>
+    <string name="descriptionHeader">Description</string>
+    <string name="urlHeader">URL</string>
 
 
 </resources>

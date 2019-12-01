@@ -17,6 +17,7 @@
         <item>Uranus</item>
         <item>Neptune</item>
     </string-array>
+    <string name="urlHeader">URL</string>
     <string name="searchButtonText">Trouvez</string>
     <string name="goToFavouritesButtonText">Favoris</string>
     <string name="deleteFavouriteButton">Supprimer</string>

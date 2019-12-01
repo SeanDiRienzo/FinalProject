@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    // Shared
+
     <string name="app_name">Финальный Проект</string>
     <string name="charging_station">Заправочные Станции</string>
     <string name="news">Новости</string>
     <string name="recipe_finder">Поиск Рецептов</string>
     <string name="currency">Обмен Валют</string>
 
-    // News
+
     <string name="articleBrowserViewText">Посмотреть статью в веб-браузере</string>
     <string name="favourites_header">Избранное</string>
     <string name="details_header">Детали</string>
@@ -24,10 +24,10 @@
         3 - Выберете статью из списка для просмотра деталей\n
         4 - Нажмите "Избранное" чтобы просмотреть список сохраненных статей</string>
 
-    // Recipe
+
     <string name="recipeButtonSearch">Поиск Рецептов </string>
 
-    // Currency
+
     <string name="input_currency">Введите Валюту</string>
     <string name="btn_convert">Поиск</string>
     <string-array name="currency_array">
@@ -41,7 +41,7 @@
         <item>Нептун</item>
     </string-array>
 
-    // CarCharging
+
     <string name="searchButtonText">Поиск</string>
     <string name="goToFavouritesButtonText">Избранное</string>
     <string name="deleteFavouriteButton">Удалить</string>
@@ -60,6 +60,8 @@
     <string name="help">Помощь</string>
     <string name="help_menu_title_text">Помощь</string>
     <string name="main_menu_car_stations">Поиск Локации</string>
+    <string name="titleHeader">заглавие</string>
+    <string name="descriptionHeader">Описание</string>
     <string name="description">Автор: Светлана Цушка\nНомер Версии: 1.0\nИнструкции:\n
        1 - Введите координаты\n
        2 - Нажмите кнопку "Поиск"\n

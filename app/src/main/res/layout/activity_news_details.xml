@@ -10,11 +10,32 @@
         android:text="@string/details_header" />
 
     <TextView
-        android:id="@+id/details_title"
+        android:id="@+id/details_title_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/main_menu_details"
-        android:text="text"
+        android:gravity="center_horizontal"
+        android:text="@string/titleHeader"
+
+        />
+
+    <TextView
+        android:id="@+id/details_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/details_title_header"
+
+
+        />
+
+    <TextView
+        android:id="@+id/details_description_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/details_title"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="@string/descriptionHeader"
 
         />
 
@@ -22,16 +43,25 @@
         android:id="@+id/details_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/details_title"
-        android:text="text"
+        android:layout_below="@id/details_description_header"
+
 
         />
+
+    <TextView
+        android:id="@+id/details_url_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/details_description"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="@string/urlHeader" />
 
     <TextView
         android:id="@+id/url_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/details_description" />
+        android:layout_below="@id/details_url_header" />
 
     <ImageView
         android:id="@+id/details_image"
