@@ -1,22 +1,18 @@
 package com.example.finalproject.recipeFinder;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.example.finalproject.R;
-
-import java.net.URL;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-
 public class EmptyActivity extends AppCompatActivity {
+    /**
+     * @param ACTIVITY_NAME; Class variable for Debug activity name
+     */
     public static final String ACTIVITY_NAME = "EMPTY_ACTIVITY: ";
 
     @Override
@@ -25,7 +21,6 @@ public class EmptyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_fragment);
 
         Bundle dataToPass = getIntent().getExtras(); //get the data that was passed from FragmentExample
-        // So far the screen is blank
 
         ReciperFinder_DetailFragment dFragment = new ReciperFinder_DetailFragment();
         dFragment.setArguments(dataToPass); //pass data to the the fragment
@@ -38,10 +33,9 @@ public class EmptyActivity extends AppCompatActivity {
 
         Button buttonSaveRecipe = (Button) findViewById(R.id.saveRecipeButton);
         buttonSaveRecipe.setOnClickListener(clk -> {
-
-        });
-    }
-
+            // Save Recipe
+        }); // End Save button
+    } // End onCreate()
 
     @Override
     public void onStart() {
@@ -58,5 +52,28 @@ public class EmptyActivity extends AppCompatActivity {
         Cursor cursor = db.query(false, MyDatabaseOpenHelper.TABLE_NAME, columns, null, null, null, null, null, null);
     }
 
-}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e(ACTIVITY_NAME, "onResume()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.e(ACTIVITY_NAME, "onDestroy()");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.e(ACTIVITY_NAME, "onPause()");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.e(ACTIVITY_NAME, "onStop()");
+        super.onStop();
+    }
+} // END RecipeFinder.java
 
