@@ -51,16 +51,45 @@ import static android.widget.Toast.LENGTH_SHORT;
  */
 public class NewsModule extends AppCompatActivity {
 
-    public static final String ACTIVITY_NAME = "NEWS";
+    /**
+     * adapter to manage the listview of article objects
+     */
     private NewsArticleAdapter adapter;
+    /**
+     * arraylist to store the list of article objects
+     */
     private ArrayList<NewsArticleObject> newsArticleList;
+    /**
+     * listview to display the list of article objects
+     */
     private ListView newsArticleListView;
+    /**
+     * button to provide user functionality to search for articles
+     */
     private Button searchButton;
+    /**
+     * button to provide user functionality to go to the favourites activity
+     */
     private Button favouritesButton;
+    /**
+     * edittext that allows user to type into to search for articles
+     */
     private EditText searchEditText;
+    /**
+     * string that represents the base url provided for api functionality
+     */
     private String NEWS_URL;
+    /**
+     * progressbar to display progress of articles loading into listview
+     */
     private ProgressBar mProgressBar;
+    /**
+     * toolbar to provide user functionality for switching activities or displaying help
+     */
     private Toolbar main_menu;
+    /**
+     * sharedpreferences object to store the user's text search
+     */
     private SharedPreferences sharedPref;
 
 
@@ -126,6 +155,7 @@ public class NewsModule extends AppCompatActivity {
              */
             alertBuilder.setNegativeButton("Add", new DialogInterface.OnClickListener() {
                 @Override
+                /** onclick for negative button of alert dialog, confirms that the user wants to clear the list of articles and create a new search */
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.cancel();
                     new AsyncHttpTask().execute(NEWS_URL);
@@ -136,7 +166,7 @@ public class NewsModule extends AppCompatActivity {
              */
             alertBuilder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
                 @Override
-
+                /** onclick for po sitive button of alert dialog, confirms that the user wants to append their new search onto the old one */
                 public void onClick(DialogInterface dialogInterface, int i) {
                     newsArticleList.clear();
                     adapter.notifyDataSetChanged();
@@ -170,6 +200,7 @@ public class NewsModule extends AppCompatActivity {
          */
         newsArticleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
+            /** onclick for user single click of item in listview, inflates the details fragment */
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 NewsArticleObject item = (NewsArticleObject) parent.getItemAtPosition(position);
                 Bundle dataToPass = new Bundle();
@@ -208,6 +239,7 @@ public class NewsModule extends AppCompatActivity {
 
 
     @Override
+    /** inflate the toolbar */
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -215,6 +247,7 @@ public class NewsModule extends AppCompatActivity {
     }
 
     @Override
+    /** onclick logic for menu in toolbar */
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.currency_selection:
@@ -387,8 +420,7 @@ public class NewsModule extends AppCompatActivity {
     }
 
     /**
-     * go to news article details activity
-     * activity that shows more details about the article passed in as item
+     * function to start the newsfavouritesactivity with intent
      */
 
     public void startFavouritesActivity() {
@@ -396,15 +428,18 @@ public class NewsModule extends AppCompatActivity {
         startActivity(favouritesIntent);
     }
 
-
-
-
+    /**
+     * function to start the recipe activity with intent
+     */
     public void startRecipeActivity() {
         Intent recipeIntent = new Intent(this, RecipeFinder.class);
         startActivity(recipeIntent);
 
     }
 
+    /**
+     * function to start the carchargingactivity with intent
+     */
     public void startCarChargingActivity() {
         Intent chargingActivity = new Intent(this, CarChargingStation.class);
         startActivity(chargingActivity);

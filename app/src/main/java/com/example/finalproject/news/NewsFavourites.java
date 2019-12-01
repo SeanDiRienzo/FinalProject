@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -29,13 +28,29 @@ import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-
+/**
+ * NewsFavourites activity to display list of saved news articles
+ */
 public class NewsFavourites extends AppCompatActivity {
+    /**
+     * arraylist newsArticleFavouriteList to store list of NewsArticleObjects records
+     */
     private ArrayList<NewsArticleObject> newsArticleFavouriteList;
+    /**
+     * listview to display the list of saved newsarticleobjects
+     */
     private ListView newsArticleFavouritesListView;
-    private Button deleteFromFavourites;
+    /**
+     * newsarticleadapter to manage the listview of newsarticleobjects
+     */
     private NewsArticleAdapter adapter;
+    /**
+     * sqlitedatabase db to manage database of favourite articles
+     */
     private SQLiteDatabase db;
+    /**
+     * toolbar to provide functionality for switching activities and help
+     */
     private Toolbar main_menu;
 
 
@@ -59,6 +74,7 @@ public class NewsFavourites extends AppCompatActivity {
         loadFavourites();
 
         newsArticleFavouritesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /** onclicklistener for user single click of a favourite article within the listview */
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 NewsArticleObject item = (NewsArticleObject) parent.getItemAtPosition(position);
@@ -73,6 +89,7 @@ public class NewsFavourites extends AppCompatActivity {
         });
         newsArticleFavouritesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
+            /** onclicklistener for user longpress of a favourite article within the listview - deletes item in list and database */
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int pos, long id) {
 
@@ -82,6 +99,7 @@ public class NewsFavourites extends AppCompatActivity {
                         .setMessage("Really delete?")
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
+                            /** onclick function for positive button of alertdialog, confirms deletion of selected record */
                             public void onClick(DialogInterface dialog, int which) {
                                 String test = "" + pos;
                                 Log.v("position", test);
@@ -104,6 +122,9 @@ public class NewsFavourites extends AppCompatActivity {
 
     }
 
+    /**
+     * inflate toolbar
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -111,6 +132,9 @@ public class NewsFavourites extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * toolbar onclick logic
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -139,24 +163,34 @@ public class NewsFavourites extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * function to start the recipe activity with intent
+     */
     public void startRecipeActivity() {
         Intent recipeIntent = new Intent(this, RecipeFinder.class);
         startActivity(recipeIntent);
 
     }
 
+    /**
+     * function to start the carcharging activity with intent
+     */
     public void startCarChargingActivity() {
         Intent chargingActivity = new Intent(this, CarChargingStation.class);
         startActivity(chargingActivity);
     }
 
+    /**
+     * function to start the currency activity with intent
+     */
     public void startCurrencyActivity() {
         Intent currencyActivity = new Intent(this, CurrencyConverter.class);
         startActivity(currencyActivity);
     }
 
-
-
+    /**
+     * function to load the list of favourite articles from the locally stored database
+     */
     private void loadFavourites() {
         String[] columns = {MyDatabaseOpenHelper.COL_ID, MyDatabaseOpenHelper.COL_TITLE, MyDatabaseOpenHelper.COL_DESCRIPTION,
                 MyDatabaseOpenHelper.COL_ARTICLEURL, MyDatabaseOpenHelper.COL_IMAGEURL};
@@ -181,6 +215,9 @@ public class NewsFavourites extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * function to expedite the creation and display of a snackbar
+     */
     public void showSnackbar(View view, String message, int duration) {
         Snackbar.make(view, message, duration).show();
     }

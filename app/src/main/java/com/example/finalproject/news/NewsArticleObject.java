@@ -9,7 +9,6 @@ import java.io.Serializable;
 public class NewsArticleObject implements Serializable {
 
     /**
-     *
      * @param id - database id
      * @param title - article title
      * @param articleUrl - article url
@@ -22,31 +21,62 @@ public class NewsArticleObject implements Serializable {
     private String imageUrl;
     private String description;
 
-
+    /**
+     * empty constructor
+     */
     public NewsArticleObject() {
-        //empty constructor
+
 
     }
 
-
+    /**
+     * constructor to create newsarticleobject
+     */
     public NewsArticleObject(long id, String title, String articleUrl, String imageUrl, String description) {
         this.id = id;
-        this.title=title;
-        this.articleUrl=articleUrl;
-        this.imageUrl=imageUrl;
-        this.description=description;
+        this.title = title;
+        this.articleUrl = articleUrl;
+        this.imageUrl = imageUrl;
+        this.description = description;
 
     }
 
 
-    public long getId() {return this.id;} /** @return id*/
-    public String getTitle() {return this.title;}   /** @return title*/
-    public String getArticleUrl() {return this.articleUrl;} /** @return articleUrl*/
-    public String getDescription() {return this.description;}   /** @return description*/
-    public String getImageUrl() {return this.imageUrl;} /** @return imageUrl*/
+    public long getId() {
+        return this.id;
+    }
+
+    /**
+     * @return id
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * @return title
+     */
+    public String getArticleUrl() {
+        return this.articleUrl;
+    }
+
+    /**
+     * @return articleUrl
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * @return description
+     */
+    public String getImageUrl() {
+        return this.imageUrl;
+    } /** @return imageUrl*/
 
     /**
      * set title
+     *
      * @param title
      */
     public void setTitle(String title) {
@@ -55,6 +85,7 @@ public class NewsArticleObject implements Serializable {
 
     /**
      * set articleUrl
+     *
      * @param articleUrl
      */
     public void setArticleUrl(String articleUrl) {
@@ -63,6 +94,7 @@ public class NewsArticleObject implements Serializable {
 
     /**
      * set description
+     *
      * @param description
      */
     public void setDescription(String description) {
@@ -71,6 +103,7 @@ public class NewsArticleObject implements Serializable {
 
     /**
      * set imageUrl
+     *
      * @param imageUrl
      */
     public void setImageUrl(String imageUrl) {
